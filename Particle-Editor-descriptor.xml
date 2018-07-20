@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/${air.version}">
+	<id>com.onebyonedesign.particleeditor</id>
+	<filename>Particle-Editor</filename>
+	<name>Particle Editor</name>
+    <versionNumber>1</versionNumber>
+	<initialWindow>
+		<content>${name}.swf</content>
+        <visible>true</visible>
+        <renderMode>direct</renderMode>
+	</initialWindow>
+</application>
