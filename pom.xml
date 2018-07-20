@@ -13,6 +13,8 @@
     <packaging>swf</packaging>
     
     <properties>
+        <debug>false</debug>
+        <optimize>true</optimize>
         <name>Particle-Editor</name>
         <particle.system.version>1.9-dofus-SNAPSHOT</particle.system.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,6 +29,16 @@
         <zip4j.jar>${settings.localRepository}/net/lingala/zip4j/zip4j/${zip4j.version}/zip4j-${zip4j.version}.jar</zip4j.jar>
         <storepass>pass</storepass>
     </properties>
+    
+    <profiles>
+        <profile>
+            <id>debug</id>
+            <properties>
+                <debug>true</debug>
+                <optimize>false</optimize>
+            </properties>
+        </profile>
+    </profiles>
     
     <build>
         <resources>          
@@ -88,8 +100,8 @@
                     <airVersion>${air.version}</airVersion>
                     <sourceFile>Main.as</sourceFile>
                     <finalName>${name}</finalName>
-                    <debug>false</debug>
-                    <optimized>true</optimized>
+                    <debug>${debug}</debug>
+                    <optimize>${optimize}</optimize>
                     <compilerWarnings>
                         <warn-no-constructor>false</warn-no-constructor>
                     </compilerWarnings>

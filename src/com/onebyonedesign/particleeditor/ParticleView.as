@@ -26,11 +26,10 @@ package com.onebyonedesign.particleeditor
     import flash.display.BitmapData;
     import starling.core.Starling;
     import starling.display.Sprite;
-    import starling.events.Event;
     import starling.events.Touch;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
-    import starling.extensions.OpenPDParticleSystem;
+    import starling.extensions.PDParticleSystem;
     import starling.textures.Texture;
     
     /**
@@ -60,7 +59,7 @@ package com.onebyonedesign.particleeditor
 		public static var HEART_DATA:BitmapData;
 		
 		/** the particle system */
-		private var mParticleSystem:OpenPDParticleSystem;
+		private var mParticleSystem:PDParticleSystem;
 		
 		/** Particle texture */
 		private var mTexture:Texture;
@@ -113,12 +112,12 @@ package com.onebyonedesign.particleeditor
         
         public function updateXPosVariance(value:Number):void 
         {
-			mParticleSystem._emitterXVariance = value;
+			mParticleSystem.emitterXVariance = value;
         }
         
         public function updateYPosVariance(value:Number):void 
         {
-			mParticleSystem._emitterYVariance = value;
+			mParticleSystem.emitterYVariance = value;
         }
         
         public function updateMaxParticles(value:Number):void 
@@ -128,217 +127,217 @@ package com.onebyonedesign.particleeditor
         
         public function updateLifeSpan(value:Number):void 
         {
-			mParticleSystem._lifespan = value;
+			mParticleSystem.lifespan = value;
         }
         
         public function updateLifeSpanVariance(value:Number):void 
         {
-			mParticleSystem._lifespanVariance = value;
+			mParticleSystem.lifespanVariance = value;
         }
         
         public function updateStartSize(value:Number):void 
         {
-			mParticleSystem._startSize = value;
+			mParticleSystem.startSize = value;
         }
         
         public function updateStartSizeVariance(value:Number):void 
         {
-			mParticleSystem._startSizeVariance = value;
+			mParticleSystem.startSizeVariance = value;
         }
         
         public function updateFinishSize(value:Number):void 
         {
-			mParticleSystem._endSize = value;
+			mParticleSystem.endSize = value;
         }
         
         public function updateFinishSizeVariance(value:Number):void 
         {
-			mParticleSystem._endSizeVariance = value;
+			mParticleSystem.endSizeVariance = value;
         }
         
         public function updateEmitAngle(value:Number):void 
         {
-			mParticleSystem._emitAngle = value * Math.PI / 180;
+			mParticleSystem.emitAngle = value * Math.PI / 180;
         }
         
         public function updateEmitAngleVariance(value:Number):void 
         {
-			mParticleSystem._emitAngleVariance = value * Math.PI / 180;
+			mParticleSystem.emitAngleVariance = value * Math.PI / 180;
         }
         
         public function updateStartRotation(value:Number):void 
         {
-			mParticleSystem._startRotation = value * Math.PI / 180;
+			mParticleSystem.startRotation = value * Math.PI / 180;
         }
         
         public function updateStartRotationVariance(value:Number):void 
         {
-			mParticleSystem._startRotationVariance = value * Math.PI / 180;
+			mParticleSystem.startRotationVariance = value * Math.PI / 180;
         }
         
         public function updateEndRotation(value:Number):void 
         {
-			mParticleSystem._endRotation = value * Math.PI / 180;
+			mParticleSystem.endRotation = value * Math.PI / 180;
         }
         
         public function updateEndRotationVariance(value:Number):void 
         {
-			mParticleSystem._endRotationVariance = value * Math.PI / 180;
+			mParticleSystem.endRotationVariance = value * Math.PI / 180;
         }
         
         public function updateSpeed(value:Number):void 
         {
-			mParticleSystem._speed = value;
+			mParticleSystem.speed = value;
         }
         
         public function updateSpeedVariance(value:Number):void 
         {
-			mParticleSystem._speedVariance = value;
+			mParticleSystem.speedVariance = value;
         }
         
         public function updateGravityX(value:Number):void 
         {
-			mParticleSystem._gravityX = value;
+			mParticleSystem.gravityX = value;
         }
         
         public function updateGravityY(value:Number):void 
         {
-			mParticleSystem._gravityY = value;
+			mParticleSystem.gravityY = value;
         }
         
         public function updateTanAcceleration(value:Number):void 
         {
-			mParticleSystem._tangentialAcceleration = value;
+			mParticleSystem.tangentialAcceleration = value;
         }
         
         public function updateTanAccelerationVariance(value:Number):void 
         {
-			mParticleSystem._tangentialAccelerationVariance = value;
+			mParticleSystem.tangentialAccelerationVariance = value;
         }
         
         public function updateRadialAcceleration(value:Number):void 
         {
-			mParticleSystem._radialAcceleration = value;
+			mParticleSystem.radialAcceleration = value;
         }
         
         public function updateRadialAccelerationVariance(value:Number):void 
         {
-			mParticleSystem._radialAccelerationVariance = value;
+			mParticleSystem.radialAccelerationVariance = value;
         }
         
         public function updateEmitterType(value:int):void 
         {
-			mParticleSystem._emitterType = value;
+			mParticleSystem.emitterType = value;
         }
         
         public function updateMaxRadius(value:Number):void 
         {
-			mParticleSystem._maxRadius = value;
+			mParticleSystem.maxRadius = value;
         }
         
         public function updateMaxRadiusVariance(value:Number):void 
         {
-			mParticleSystem._maxRadiusVariance = value;
+			mParticleSystem.maxRadiusVariance = value;
         }
         
         public function updateMinRadius(value:Number):void 
         {
-			mParticleSystem._minRadius = value;
+			mParticleSystem.minRadius = value;
         }
         
         public function updateMinRadiusVariance(value:Number):void
         {
-            mParticleSystem._minRadiusVariance = value;
+            mParticleSystem.minRadiusVariance = value;
         }
         
         public function updateDegreesPerSecond(value:Number):void 
         {
-			mParticleSystem._rotatePerSecond = value * Math.PI / 180;
+			mParticleSystem.rotatePerSecond = value * Math.PI / 180;
         }
         
         public function updateDegreesPerSecondVariance(value:Number):void 
         {
-			mParticleSystem._rotatePerSecondVariance = value * Math.PI / 180;
+			mParticleSystem.rotatePerSecondVariance = value * Math.PI / 180;
         }
         
         public function updateStartRed(value:Number):void 
         {
-			mParticleSystem._startColor.red = value;
+			mParticleSystem.startColor.red = value;
         }
         
         public function updateStartGreen(value:Number):void 
         {
-			mParticleSystem._startColor.green = value;
+			mParticleSystem.startColor.green = value;
         }
         
         public function updateStartBlue(value:Number):void 
         {
-			mParticleSystem._startColor.blue = value;
+			mParticleSystem.startColor.blue = value;
         }
         
         public function updateStartAlpha(value:Number):void 
         {
-			mParticleSystem._startColor.alpha = value;
+			mParticleSystem.startColor.alpha = value;
         }
         
         public function updateFinishRed(value:Number):void 
         {
-			mParticleSystem._endColor.red = value;
+			mParticleSystem.endColor.red = value;
         }
         
         public function updateFinishGreen(value:Number):void 
         {
-			mParticleSystem._endColor.green = value;
+			mParticleSystem.endColor.green = value;
         }
         
         public function updateFinishBlue(value:Number):void 
         {
-			mParticleSystem._endColor.blue = value;
+			mParticleSystem.endColor.blue = value;
         }
         
         public function updateFinishAlpha(value:Number):void 
         {
-			mParticleSystem._endColor.alpha = value;
+			mParticleSystem.endColor.alpha = value;
         }
         
         public function updateStartRedVariance(value:Number):void 
         {
-			mParticleSystem._startColorVariance.red = value;
+			mParticleSystem.startColorVariance.red = value;
         }
         
         public function updateStartGreenVariance(value:Number):void 
         {
-			mParticleSystem._startColorVariance.green = value;
+			mParticleSystem.startColorVariance.green = value;
         }
         
         public function updateStartBlueVariance(value:Number):void 
         {
-			mParticleSystem._startColorVariance.blue = value;
+			mParticleSystem.startColorVariance.blue = value;
         }
         
         public function updateStartAlphaVariance(value:Number):void 
         {
-			mParticleSystem._startColorVariance.alpha = value;
+			mParticleSystem.startColorVariance.alpha = value;
         }
         
         public function updateFinishRedVariance(value:Number):void 
         {
-			mParticleSystem._endColorVariance.red = value;
+			mParticleSystem.endColorVariance.red = value;
         }
         
         public function updateFinishGreenVariance(value:Number):void 
         {
-			mParticleSystem._endColorVariance.green = value;
+			mParticleSystem.endColorVariance.green = value;
         }
         
         public function updateFinishBlueVariance(value:Number):void 
         {
-			mParticleSystem._endColorVariance.blue = value;
+			mParticleSystem.endColorVariance.blue = value;
         }
         
         public function updateFinishAlphaVariance(value:Number):void 
         {
-			mParticleSystem._endColorVariance.alpha = value;
+			mParticleSystem.endColorVariance.alpha = value;
         }
         
         public function updateSourceBlend(value:uint):void 
@@ -355,7 +354,7 @@ package com.onebyonedesign.particleeditor
         private function init(cfg:XML):void
         {
 			mTexture = Texture.fromBitmapData(SELECTED_DATA);
-			mParticleSystem = new OpenPDParticleSystem(cfg, mTexture);
+			mParticleSystem = new PDParticleSystem(cfg, mTexture);
 			mParticleSystem.emitterX = 200;
             mParticleSystem.emitterY = 300;
             addChild(mParticleSystem);
@@ -398,7 +397,7 @@ package com.onebyonedesign.particleeditor
             mTexture.dispose();
                 
 			mTexture = Texture.fromBitmapData(SELECTED_DATA);
-			mParticleSystem = new OpenPDParticleSystem(mParticleConfig.xml, mTexture);
+			mParticleSystem = new PDParticleSystem(mParticleConfig.xml, mTexture);
 			mParticleSystem.emitterX = ex;
 			mParticleSystem.emitterY = ey;
 			mParticleSystem.start();
