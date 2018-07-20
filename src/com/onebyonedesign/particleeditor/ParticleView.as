@@ -113,233 +113,232 @@ package com.onebyonedesign.particleeditor
         
         public function updateXPosVariance(value:Number):void 
         {
-			mParticleSystem.mEmitterXVariance = value;
+			mParticleSystem._emitterXVariance = value;
         }
         
         public function updateYPosVariance(value:Number):void 
         {
-			mParticleSystem.mEmitterYVariance = value;
+			mParticleSystem._emitterYVariance = value;
         }
         
         public function updateMaxParticles(value:Number):void 
         {
-			mParticleSystem.mMaxNumParticles = value;
-			mParticleSystem.emissionRate = mParticleSystem.mMaxNumParticles / mParticleSystem.mLifespan;
+			mParticleSystem.capacity = value;
         }
         
         public function updateLifeSpan(value:Number):void 
         {
-			mParticleSystem.mLifespan = value;
+			mParticleSystem._lifespan = value;
         }
         
         public function updateLifeSpanVariance(value:Number):void 
         {
-			mParticleSystem.mLifespanVariance = value;
+			mParticleSystem._lifespanVariance = value;
         }
         
         public function updateStartSize(value:Number):void 
         {
-			mParticleSystem.mStartSize = value;
+			mParticleSystem._startSize = value;
         }
         
         public function updateStartSizeVariance(value:Number):void 
         {
-			mParticleSystem.mStartSizeVariance = value;
+			mParticleSystem._startSizeVariance = value;
         }
         
         public function updateFinishSize(value:Number):void 
         {
-			mParticleSystem.mEndSize = value;
+			mParticleSystem._endSize = value;
         }
         
         public function updateFinishSizeVariance(value:Number):void 
         {
-			mParticleSystem.mEndSizeVariance = value;
+			mParticleSystem._endSizeVariance = value;
         }
         
         public function updateEmitAngle(value:Number):void 
         {
-			mParticleSystem.mEmitAngle = value * Math.PI / 180;
+			mParticleSystem._emitAngle = value * Math.PI / 180;
         }
         
         public function updateEmitAngleVariance(value:Number):void 
         {
-			mParticleSystem.mEmitAngleVariance = value * Math.PI / 180;
+			mParticleSystem._emitAngleVariance = value * Math.PI / 180;
         }
         
         public function updateStartRotation(value:Number):void 
         {
-			mParticleSystem.mStartRotation = value * Math.PI / 180;
+			mParticleSystem._startRotation = value * Math.PI / 180;
         }
         
         public function updateStartRotationVariance(value:Number):void 
         {
-			mParticleSystem.mStartRotationVariance = value * Math.PI / 180;
+			mParticleSystem._startRotationVariance = value * Math.PI / 180;
         }
         
         public function updateEndRotation(value:Number):void 
         {
-			mParticleSystem.mEndRotation = value * Math.PI / 180;
+			mParticleSystem._endRotation = value * Math.PI / 180;
         }
         
         public function updateEndRotationVariance(value:Number):void 
         {
-			mParticleSystem.mEndRotationVariance = value * Math.PI / 180;
+			mParticleSystem._endRotationVariance = value * Math.PI / 180;
         }
         
         public function updateSpeed(value:Number):void 
         {
-			mParticleSystem.mSpeed = value;
+			mParticleSystem._speed = value;
         }
         
         public function updateSpeedVariance(value:Number):void 
         {
-			mParticleSystem.mSpeedVariance = value;
+			mParticleSystem._speedVariance = value;
         }
         
         public function updateGravityX(value:Number):void 
         {
-			mParticleSystem.mGravityX = value;
+			mParticleSystem._gravityX = value;
         }
         
         public function updateGravityY(value:Number):void 
         {
-			mParticleSystem.mGravityY = value;
+			mParticleSystem._gravityY = value;
         }
         
         public function updateTanAcceleration(value:Number):void 
         {
-			mParticleSystem.mTangentialAcceleration = value;
+			mParticleSystem._tangentialAcceleration = value;
         }
         
         public function updateTanAccelerationVariance(value:Number):void 
         {
-			mParticleSystem.mTangentialAccelerationVariance = value;
+			mParticleSystem._tangentialAccelerationVariance = value;
         }
         
         public function updateRadialAcceleration(value:Number):void 
         {
-			mParticleSystem.mRadialAcceleration = value;
+			mParticleSystem._radialAcceleration = value;
         }
         
         public function updateRadialAccelerationVariance(value:Number):void 
         {
-			mParticleSystem.mRadialAccelerationVariance = value;
+			mParticleSystem._radialAccelerationVariance = value;
         }
         
         public function updateEmitterType(value:int):void 
         {
-			mParticleSystem.mEmitterType = value;
+			mParticleSystem._emitterType = value;
         }
         
         public function updateMaxRadius(value:Number):void 
         {
-			mParticleSystem.mMaxRadius = value;
+			mParticleSystem._maxRadius = value;
         }
         
         public function updateMaxRadiusVariance(value:Number):void 
         {
-			mParticleSystem.mMaxRadiusVariance = value;
+			mParticleSystem._maxRadiusVariance = value;
         }
         
         public function updateMinRadius(value:Number):void 
         {
-			mParticleSystem.mMinRadius = value;
+			mParticleSystem._minRadius = value;
         }
         
         public function updateMinRadiusVariance(value:Number):void
         {
-            mParticleSystem.mMinRadiusVariance = value;
+            mParticleSystem._minRadiusVariance = value;
         }
         
         public function updateDegreesPerSecond(value:Number):void 
         {
-			mParticleSystem.mRotatePerSecond = value * Math.PI / 180;
+			mParticleSystem._rotatePerSecond = value * Math.PI / 180;
         }
         
         public function updateDegreesPerSecondVariance(value:Number):void 
         {
-			mParticleSystem.mRotatePerSecondVariance = value * Math.PI / 180;
+			mParticleSystem._rotatePerSecondVariance = value * Math.PI / 180;
         }
         
         public function updateStartRed(value:Number):void 
         {
-			mParticleSystem.mStartColor.red = value;
+			mParticleSystem._startColor.red = value;
         }
         
         public function updateStartGreen(value:Number):void 
         {
-			mParticleSystem.mStartColor.green = value;
+			mParticleSystem._startColor.green = value;
         }
         
         public function updateStartBlue(value:Number):void 
         {
-			mParticleSystem.mStartColor.blue = value;
+			mParticleSystem._startColor.blue = value;
         }
         
         public function updateStartAlpha(value:Number):void 
         {
-			mParticleSystem.mStartColor.alpha = value;
+			mParticleSystem._startColor.alpha = value;
         }
         
         public function updateFinishRed(value:Number):void 
         {
-			mParticleSystem.mEndColor.red = value;
+			mParticleSystem._endColor.red = value;
         }
         
         public function updateFinishGreen(value:Number):void 
         {
-			mParticleSystem.mEndColor.green = value;
+			mParticleSystem._endColor.green = value;
         }
         
         public function updateFinishBlue(value:Number):void 
         {
-			mParticleSystem.mEndColor.blue = value;
+			mParticleSystem._endColor.blue = value;
         }
         
         public function updateFinishAlpha(value:Number):void 
         {
-			mParticleSystem.mEndColor.alpha = value;
+			mParticleSystem._endColor.alpha = value;
         }
         
         public function updateStartRedVariance(value:Number):void 
         {
-			mParticleSystem.mStartColorVariance.red = value;
+			mParticleSystem._startColorVariance.red = value;
         }
         
         public function updateStartGreenVariance(value:Number):void 
         {
-			mParticleSystem.mStartColorVariance.green = value;
+			mParticleSystem._startColorVariance.green = value;
         }
         
         public function updateStartBlueVariance(value:Number):void 
         {
-			mParticleSystem.mStartColorVariance.blue = value;
+			mParticleSystem._startColorVariance.blue = value;
         }
         
         public function updateStartAlphaVariance(value:Number):void 
         {
-			mParticleSystem.mStartColorVariance.alpha = value;
+			mParticleSystem._startColorVariance.alpha = value;
         }
         
         public function updateFinishRedVariance(value:Number):void 
         {
-			mParticleSystem.mEndColorVariance.red = value;
+			mParticleSystem._endColorVariance.red = value;
         }
         
         public function updateFinishGreenVariance(value:Number):void 
         {
-			mParticleSystem.mEndColorVariance.green = value;
+			mParticleSystem._endColorVariance.green = value;
         }
         
         public function updateFinishBlueVariance(value:Number):void 
         {
-			mParticleSystem.mEndColorVariance.blue = value;
+			mParticleSystem._endColorVariance.blue = value;
         }
         
         public function updateFinishAlphaVariance(value:Number):void 
         {
-			mParticleSystem.mEndColorVariance.alpha = value;
+			mParticleSystem._endColorVariance.alpha = value;
         }
         
         public function updateSourceBlend(value:uint):void 
