@@ -28,7 +28,6 @@ package com.onebyonedesign.particleeditor
     import com.bit101.components.Component;
     import com.bit101.components.Label;
     import com.bit101.components.Window;
-    import com.ww.PEXtoPlist;
     import flash.events.Event;
     import flash.net.FileFilter;
     import flash.net.FileReference;
@@ -104,7 +103,6 @@ package com.onebyonedesign.particleeditor
 			
 			mGUI.addGroup("Save");
 			mGUI.addButton("Export Particle", { name:"savePartBtn", callback:saveParticle } );
-			mGUI.addToggle("savePlist", { label:"Include .PLIST file", name:"savePlist" } );
 			mGUI.addGroup("Load");
 			mGUI.addButton("Load Particle", { name:"loadButton", callback:onLoad } );
 			mGUI.addGroup("Edit");
@@ -194,7 +192,7 @@ package com.onebyonedesign.particleeditor
 		private function onLoad(o:*):void
 		{
 			downloader.addEventListener(Event.SELECT, onLoadSelect);
-			downloader.browse([new FileFilter("Particle Files (*.pex)", "*.pex")]);
+			downloader.browse([new FileFilter("Particle Files (*.d3fx)", "*.d3fx")]);
 		}
 		
 		/** After selecting particle file to load */
@@ -209,23 +207,17 @@ package com.onebyonedesign.particleeditor
 		private function onLoadComplete(event:Event):void 
 		{
 			downloader.removeEventListener(Event.COMPLETE, onLoadComplete);
-            
-			var xml:XML;
+
+            var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
 			try
 			{
-				xml = new XML(downloader.data);
+                binaryParticle.loadFromByteArray(downloader.data);
+                buildParticleFromXML(mParticleConfig.xml);
 			}
 			catch (err:Error) 
 			{
 				trace(err);
-			}
-			if (xml != null) 
-			{
-				buildParticleFromXML(xml);
-			}
-			else 
-			{
-				showError("Particle file appears to be malformed");
+                showError("Particle file appears to be malformed");
 			}
 		}
         
@@ -250,58 +242,14 @@ package com.onebyonedesign.particleeditor
 			win.parent.removeChild(win);
 		}
         
-        // 
-        // Save zipped particle (.pex and .png)
-        //
-        
-		/** Save particle texture image source and config file and optional .plist config to .zip */
+		/** Save particle texture image source and config file to .d3fx */
 		private function saveParticle(o:*):void
 		{
-			var zip:ZipOutput = new ZipOutput();
-			var filename:String;
-			var filedata:ByteArray;
-			var entry:ZipEntry;
-            var xml:XML = mParticleConfig.xml;
-			
-			// add pex to zip
-			filename = "particle.pex";
-			filedata = new ByteArray();
-			filedata.writeUTFBytes(xml.toXMLString());
+            var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
+            binaryParticle.texture = mParticleView.particleData;
+            var filedata:ByteArray = binaryParticle.toByteArray();
 			filedata.position = 0;
-			
-			entry = new ZipEntry(filename);
-			zip.putNextEntry(entry);
-			zip.write(filedata);
-			zip.closeEntry();
-			
-			// texture to zip
-			filename = "texture.png";
-			filedata = PNGEncoder.encode(mParticleView.particleData);
-			filedata.position = 0;
-			
-			entry = new ZipEntry(filename);
-			zip.putNextEntry(entry);
-			zip.write(filedata);
-			zip.closeEntry();
-			
-			if (mSettings.savePlist)
-			{
-				filename = "particle.plist";
-				var plist:String = PEXtoPlist.createPlist(xml.toXMLString());
-				filedata = new ByteArray();
-				filedata.writeUTFBytes(plist);
-				filedata.position = 0;
-				
-				entry = new ZipEntry(filename);
-				zip.putNextEntry(entry);
-				zip.write(filedata);
-				zip.closeEntry();
-			}
-			
-			// finish the zip
-			zip.finish();
-			
-			downloader.save(zip.byteArray, "particle.zip");
+			downloader.save(filedata, "particle.d3fx");
 		}
         
         //

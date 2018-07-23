@@ -42,7 +42,10 @@ package com.onebyonedesign.particleeditor
         public function randomize():void
         {
             var randSetting:Number;
-            
+
+            randSetting = randRange(1, 0, 0);
+            mConfig..emitterType.@value = String(randSetting);
+
             randSetting = randRange(1000, 1, 2);
             mConfig..maxParticles.@value = String(randSetting);
             

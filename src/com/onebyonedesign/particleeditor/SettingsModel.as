@@ -95,8 +95,6 @@ package com.onebyonedesign.particleeditor
 		private var _srcBlend:uint = 0x302;
 		private var _dstBlend:uint = 0x01;
 		
-		private var _savePlist:Boolean = false;
-		
 		public function SettingsModel() 
 		{
             mListeners = new Vector.<SettingsListener>();
@@ -838,17 +836,6 @@ package com.onebyonedesign.particleeditor
                 listener.updateDestinationBlend(value);
             }
         }
-        
-        public function get savePlist():Boolean 
-        {
-            return _savePlist;
-        }
-        
-        public function set savePlist(value:Boolean):void 
-        {
-            _savePlist = value;
-        }
-        
 	}
 
 }

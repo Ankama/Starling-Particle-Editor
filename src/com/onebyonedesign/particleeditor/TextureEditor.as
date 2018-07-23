@@ -162,19 +162,19 @@ package com.onebyonedesign.particleeditor
 			var data:BitmapData = (loader.content as Bitmap).bitmapData;
 			
 			var mat:Matrix = new Matrix();
-			var w:int = data.width
+			var w:int = data.width;
 			var h:int = data.height;
-			if (data.width > 64) 
+			var scale:Number = 1;
+			if (data.width > 64 || data.height > 64)
 			{
-				mat.scale(64 / data.width, 1);
-				w *= 64 / data.width;
-			}
-			
-			if (data.height > 64) 
-			{
-				mat.scale(1, 64 / data.height);
-				h *= 64 / data.height;
-			}
+				if(data.width > data.height)
+                    scale = 64 / data.width;
+				else
+                    scale = 64 / data.height;
+                w *= scale;
+                h *= scale;
+            }
+            mat.scale(scale, scale);
 			
 			ParticleView.CUSTOM_DATA.dispose();
 			ParticleView.CUSTOM_DATA = new BitmapData(w, h, true, 0x00000000);
