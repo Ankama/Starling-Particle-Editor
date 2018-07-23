@@ -153,29 +153,29 @@ package com.onebyonedesign.particleeditor
 			
 			mGUI.addColumn("Particle Color");
 			mGUI.addGroup("Start");
-			mGUI.addSlider("sr", 0, 1.0, { label:"R", name:"sr" } );
-			mGUI.addSlider("sg", 0, 1.0, { label:"G", name:"sg" } );
-			mGUI.addSlider("sb", 0, 1.0, { label:"B", name:"sb" } );
-			mGUI.addSlider("sa", 0, 1.0, { label:"A", name:"sa" } );
+			mGUI.addSlider("sr", 0, 1.0, { label:"R", name:"sr", width:150 } );
+			mGUI.addSlider("sg", 0, 1.0, { label:"G", name:"sg", width:150 } );
+			mGUI.addSlider("sb", 0, 1.0, { label:"B", name:"sb", width:150 } );
+			mGUI.addSlider("sa", 0, 1.0, { label:"A", name:"sa", width:150 } );
 			
 			mGUI.addGroup("Finish");
-			mGUI.addSlider("fr", 0, 1.0, { label:"R", name:"fr" } );
-			mGUI.addSlider("fg", 0, 1.0, { label:"G", name:"fg" } );
-			mGUI.addSlider("fb", 0, 1.0, { label:"B", name:"fb" } );
-			mGUI.addSlider("fa", 0, 1.0, { label:"A", name:"fa" } );
+			mGUI.addSlider("fr", 0, 1.0, { label:"R", name:"fr", width:150 } );
+			mGUI.addSlider("fg", 0, 1.0, { label:"G", name:"fg", width:150 } );
+			mGUI.addSlider("fb", 0, 1.0, { label:"B", name:"fb", width:150 } );
+			mGUI.addSlider("fa", 0, 1.0, { label:"A", name:"fa", width:150 } );
 			
 			mGUI.addColumn("Particle Color Variance");
 			mGUI.addGroup("Start");
-			mGUI.addSlider("svr", 0, 1.0, { label:"R", name:"svr" } );
-			mGUI.addSlider("svg", 0, 1.0, { label:"G", name:"svg" } );
-			mGUI.addSlider("svb", 0, 1.0, { label:"B", name:"svb" } );
-			mGUI.addSlider("sva", 0, 1.0, { label:"A", name:"sva" } );
+			mGUI.addSlider("svr", 0, 1.0, { label:"R", name:"svr", width:150 } );
+			mGUI.addSlider("svg", 0, 1.0, { label:"G", name:"svg", width:150 } );
+			mGUI.addSlider("svb", 0, 1.0, { label:"B", name:"svb", width:150 } );
+			mGUI.addSlider("sva", 0, 1.0, { label:"A", name:"sva", width:150 } );
 			
 			mGUI.addGroup("Finish");
-			mGUI.addSlider("fvr", 0, 1.0, { label:"R", name:"fvr" } );
-			mGUI.addSlider("fvg", 0, 1.0, { label:"G", name:"fvg" } );
-			mGUI.addSlider("fvb", 0, 1.0, { label:"B", name:"fvb" } );
-			mGUI.addSlider("fva", 0, 1.0, { label:"A", name:"fva" } );
+			mGUI.addSlider("fvr", 0, 1.0, { label:"R", name:"fvr", width:150 } );
+			mGUI.addSlider("fvg", 0, 1.0, { label:"G", name:"fvg", width:150 } );
+			mGUI.addSlider("fvb", 0, 1.0, { label:"B", name:"fvb", width:150 } );
+			mGUI.addSlider("fva", 0, 1.0, { label:"A", name:"fva", width:150 } );
 			
 			mGUI.addGroup("Blend Function");
 			mGUI.addComboBox("srcBlend", mBlendArray, {  label:"Source", name:"srcBlend" } );

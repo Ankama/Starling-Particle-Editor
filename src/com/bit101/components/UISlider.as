@@ -35,7 +35,7 @@ package com.bit101.components
 	public class UISlider extends Component
 	{
 		protected var _label:Label;
-		protected var _valueLabel:Label;
+		protected var _valueLabel:InputText;
 		protected var _slider:Slider;
 		protected var _precision:int = 1;
 		protected var _sliderClass:Class;
@@ -69,8 +69,21 @@ package com.bit101.components
 		{
 			_label = new Label(this, 0, 0);
 			_slider = new _sliderClass(this, 0, 0, onSliderChange);
-			_valueLabel = new Label(this);
+			_valueLabel = new InputText(this, 0, 0, "0", onValueTextChange);
+            _valueLabel.width = 50;
+            _valueLabel.restrict = "-0123456789.";
 		}
+
+        /**
+         * Called when the value is changed manually.
+         */
+        protected function onValueTextChange(event:Event):void
+        {
+            event.stopImmediatePropagation();
+            _slider.value = Number(_valueLabel.text);
+            invalidate();
+			dispatchEvent(new Event(Event.CHANGE));
+        }
 		
 		/**
 		 * Formats the value of the slider to a string based on the current level of precision.
