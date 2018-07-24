@@ -57,6 +57,9 @@ package com.onebyonedesign.particleeditor
 		public static var CUSTOM_DATA:BitmapData;
 		public static var SELECTED_DATA:BitmapData;
 		public static var HEART_DATA:BitmapData;
+
+        public static var POSITION_X:int = 202;
+        public static var POSITION_Y:int = 348;
 		
 		/** the particle system */
 		private var mParticleSystem:PDParticleSystem;
@@ -109,7 +112,17 @@ package com.onebyonedesign.particleeditor
         }
         
         /* INTERFACE com.onebyonedesign.particleeditor.SettingsListener */
-        
+
+        public function updateXPos(value:Number):void
+        {
+            mParticleSystem.emitterX = value;
+        }
+
+        public function updateYPos(value:Number):void
+        {
+            mParticleSystem.emitterY = value;
+        }
+
         public function updateXPosVariance(value:Number):void 
         {
 			mParticleSystem.emitterXVariance = value;
@@ -355,9 +368,11 @@ package com.onebyonedesign.particleeditor
         {
 			mTexture = Texture.fromBitmapData(SELECTED_DATA);
 			mParticleSystem = new PDParticleSystem(cfg, mTexture);
-			mParticleSystem.emitterX = 200;
-            mParticleSystem.emitterY = 300;
-            addChild(mParticleSystem);
+            mParticleSystem.x = POSITION_X;
+            mParticleSystem.y = POSITION_Y;
+            mParticleSystem.emitterX = parseFloat(cfg.sourcePosition.attribute("x"));
+            mParticleSystem.emitterY = parseFloat(cfg.sourcePosition.attribute("y"));
+			addChild(mParticleSystem);
             
             startSystem();
         }
@@ -378,8 +393,8 @@ package com.onebyonedesign.particleeditor
             {
 				if (touch.globalX <= 400 && touch.globalY <= 500) 
 				{
-					mParticleSystem.emitterX = touch.globalX;
-					mParticleSystem.emitterY = touch.globalY;
+                    mSettings.xPos = touch.globalX - mParticleSystem.x;
+					mSettings.yPos = touch.globalY - mParticleSystem.y;
 				}
             }
         }
@@ -398,6 +413,8 @@ package com.onebyonedesign.particleeditor
                 
 			mTexture = Texture.fromBitmapData(SELECTED_DATA);
 			mParticleSystem = new PDParticleSystem(mParticleConfig.xml, mTexture);
+            mParticleSystem.x = POSITION_X;
+            mParticleSystem.y = POSITION_Y;
 			mParticleSystem.emitterX = ex;
 			mParticleSystem.emitterY = ey;
 			mParticleSystem.start();

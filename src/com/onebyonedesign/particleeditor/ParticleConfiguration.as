@@ -183,7 +183,17 @@ package com.onebyonedesign.particleeditor
         }
         
          /* INTERFACE com.onebyonedesign.particleeditor.SettingsListener */
-        
+
+        public function updateXPos(value:Number):void
+        {
+            mConfig.sourcePosition.@x = value;
+        }
+
+        public function updateYPos(value:Number):void
+        {
+            mConfig.sourcePosition.@y = value;
+        }
+
         public function updateXPosVariance(value:Number):void 
         {
             mConfig.sourcePositionVariance.@x = value;

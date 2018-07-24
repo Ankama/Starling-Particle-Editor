@@ -32,8 +32,10 @@ package
     import flash.events.Event;
     import flash.geom.Rectangle;
     import starling.core.Starling;
-	
-	/**
+    import starling.display.Image;
+    import starling.textures.Texture;
+
+    /**
 	 * Entry point of particle editor
 	 * @author Devon O.
 	 */
@@ -43,6 +45,9 @@ package
 	{
         [Embed(source="../assets/fire.pex", mimeType="application/octet-stream")]
 		private const DEFAULT_CONFIG:Class;
+
+        [Embed(source="../assets/background.png")]
+        private const DEFAULT_BACKGROUND:Class;
 		
         /** Starling instance */
 		private var mStarling:Starling;
@@ -83,6 +88,9 @@ package
         private function onStarlingRoot(event:*):void
         {
             mStarling.removeEventListener("rootCreated", onStarlingRoot);
+
+            var background : Image = new Image(Texture.fromBitmap(new DEFAULT_BACKGROUND()));
+            mStarling.stage.addChildAt(background,0);
             
             var settings:SettingsModel = new SettingsModel();
             settings.x = mViewPort.width;

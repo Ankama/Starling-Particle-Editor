@@ -42,8 +42,17 @@ package com.onebyonedesign.particleeditor
 		public var r:Number;
 		public var g:Number;
 		public var b:Number;
-		
-		
+
+        public function get gameBackgroundVisible():Boolean
+        {
+            return Starling.current.stage.getChildAt(0).visible;
+        }
+
+		public function set gameBackgroundVisible(value:Boolean):void
+        {
+            Starling.current.stage.getChildAt(0).visible = value;
+        }
+
 		public function BackgroundEditor() 
 		{
 			mStage = Starling.current.stage;
@@ -72,7 +81,8 @@ package com.onebyonedesign.particleeditor
 		private function initUI():void 
 		{
 			mGUI = new SimpleGUI(this, "Background Editor");
-			
+
+            mGUI.addToggle("gameBackgroundVisible", { label:"Display Game Background"});
 			mGUI.addSlider("r", 0, 1.0, { label:"R", callback:onRed } );
 			mGUI.addSlider("g", 0, 1.0, { label:"G", callback:onGreen } );
 			mGUI.addSlider("b", 0, 1.0, { label:"B", callback:onBlue } );

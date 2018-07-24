@@ -26,6 +26,8 @@ package com.onebyonedesign.particleeditor
     
     public interface SettingsListener 
     {
+        function updateXPos(value:Number):void;
+        function updateYPos(value:Number):void;
         function updateXPosVariance(value:Number):void;
         function updateYPosVariance(value:Number):void;
         function updateMaxParticles(value:Number):void;

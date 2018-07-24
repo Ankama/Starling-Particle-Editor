@@ -33,7 +33,9 @@ package com.onebyonedesign.particleeditor
 	public final class SettingsModel extends Sprite
 	{
         private var mListeners:Vector.<SettingsListener>;
-		
+
+        private var _xPos:Number = 0.0;
+        private var _yPos:Number = 0.0;
 		private var _xPosVar:Number = 0.0;
 		private var _yPosVar:Number = 0.0;
 		private var _maxParts:Number = 500.0;
@@ -103,6 +105,36 @@ package com.onebyonedesign.particleeditor
         public function addListener(listener:SettingsListener):void
         {
             mListeners.push(listener);
+        }
+
+        public function get xPos():Number
+        {
+            return _xPos;
+        }
+
+        public function set xPos(value:Number):void
+        {
+            _xPos = value;
+
+            for each(var listener:SettingsListener in mListeners)
+            {
+                listener.updateXPos(value);
+            }
+        }
+
+        public function get yPos():Number
+        {
+            return _yPos;
+        }
+
+        public function set yPos(value:Number):void
+        {
+            _yPos = value;
+
+            for each(var listener:SettingsListener in mListeners)
+            {
+                listener.updateYPos(value);
+            }
         }
         
         public function get xPosVar():Number 

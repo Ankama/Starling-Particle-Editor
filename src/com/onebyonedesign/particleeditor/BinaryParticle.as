@@ -60,6 +60,8 @@ public class BinaryParticle
                 m_settings.stRotVar = src.readFloat();
                 m_settings.endRot = src.readFloat();
                 m_settings.endRotVar = src.readFloat();
+                m_settings.xPos = src.readFloat();
+                m_settings.yPos = src.readFloat();
                 m_settings.xPosVar = src.readFloat();
                 m_settings.yPosVar = src.readFloat();
                 m_settings.speed = src.readFloat();
@@ -134,6 +136,8 @@ public class BinaryParticle
             result.writeFloat(m_settings.stRotVar);
             result.writeFloat(m_settings.endRot);
             result.writeFloat(m_settings.endRotVar);
+            result.writeFloat(m_settings.xPos);
+            result.writeFloat(m_settings.yPos);
             result.writeFloat(m_settings.xPosVar);
             result.writeFloat(m_settings.yPosVar);
             result.writeFloat(m_settings.speed);
