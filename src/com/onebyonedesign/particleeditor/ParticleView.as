@@ -58,8 +58,8 @@ package com.onebyonedesign.particleeditor
 		public static var SELECTED_DATA:BitmapData;
 		public static var HEART_DATA:BitmapData;
 
-        public static var POSITION_X:int = 202;
-        public static var POSITION_Y:int = 348;
+        public static var POSITION_X:int = 214;
+        public static var POSITION_Y:int = 366;
 		
 		/** the particle system */
 		private var mParticleSystem:PDParticleSystem;
