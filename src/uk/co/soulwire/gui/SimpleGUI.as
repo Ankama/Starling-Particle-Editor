@@ -26,36 +26,36 @@
 
 package uk.co.soulwire.gui
 {
-	import com.bit101.components.CheckBox;
-	import com.bit101.components.ColorChooser;
-	import com.bit101.components.ComboBox;
-	import com.bit101.components.Component;
-	import com.bit101.components.HUISlider;
-	import com.bit101.components.Label;
-	import com.bit101.components.NumericStepper;
-	import com.bit101.components.PushButton;
-	import com.bit101.components.RangeSlider;
-	import com.bit101.components.Style;
+import com.bit101.components.CheckBox;
+import com.bit101.components.ColorChooser;
+import com.bit101.components.ComboBox;
+import com.bit101.components.Component;
+import com.bit101.components.HUISlider;
+import com.bit101.components.Label;
+import com.bit101.components.NumericStepper;
+import com.bit101.components.PushButton;
+import com.bit101.components.RangeSlider;
+import com.bit101.components.Style;
 
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
-	import flash.display.Stage;
-	import flash.events.ContextMenuEvent;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.geom.Rectangle;
-	import flash.net.FileReference;
-	import flash.system.System;
-	import flash.ui.ContextMenu;
-	import flash.ui.ContextMenuItem;
-	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.DisplayObjectContainer;
+import flash.display.Sprite;
+import flash.display.Stage;
+import flash.events.ContextMenuEvent;
+import flash.events.Event;
+import flash.events.EventDispatcher;
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
+import flash.geom.Rectangle;
+import flash.net.FileReference;
+import flash.system.System;
+import flash.ui.ContextMenu;
+import flash.ui.ContextMenuItem;
+import flash.utils.Dictionary;
+import flash.utils.getQualifiedClassName;
 
-	/**
+/**
 	 * SimpleGUI
 	 */
 	 
@@ -289,11 +289,12 @@ package uk.co.soulwire.gui
 		 * @param title An optional title to display at the top of the column
 		 */
 		
-		public function addColumn(title : String = null) : void
+		public function addColumn(title : String = null) : Sprite
 		{
 			_column = new Sprite();
 			_container.addChild(_column);
 			addGroup(title);
+			return _column;
 		}
 		
 		/**
@@ -303,7 +304,7 @@ package uk.co.soulwire.gui
 		 * @param title An optional title to display at the top of the group
 		 */
 		
-		public function addGroup(title : String = null) : void
+		public function addGroup(title : String = null) : Sprite
 		{
 			if (_group && _group.numChildren == 0)
 			{
@@ -317,6 +318,7 @@ package uk.co.soulwire.gui
 			{
 				addLabel(title.toUpperCase());
 			}
+			return _group;
 		}
 		
 		/**
@@ -325,9 +327,9 @@ package uk.co.soulwire.gui
 		 * @param text The text content of the label
 		 */
 		
-		public function addLabel(text : String) : void
+		public function addLabel(text : String) : Component
 		{
-			addControl(Label, {text : text.toUpperCase()});
+			return addControl(Label, {text : text.toUpperCase()});
 		}
 		
 		/**
@@ -342,18 +344,18 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addToggle(target : String, options : Object = null) : void
+		public function addToggle(target : String, options : Object = null) : Component
 		{
 			options = parseOptions(target, options);
 			
 			var params : Object = {};
 			
 			params.target = target;
-			
-			addControl(CheckBox, merge(params, options));
+
+            return addControl(CheckBox, merge(params, options));
 		}
 		
-		public function addButton(label : String, options : Object = null) : void
+		public function addButton(label : String, options : Object = null) : Component
 		{
 			options = parseOptions(label, options);
 			
@@ -361,7 +363,7 @@ package uk.co.soulwire.gui
 
 			params.label = label;
 			
-			addControl(PushButton, merge(params, options));
+			return addControl(PushButton, merge(params, options));
 		}
 		
 		/**
@@ -378,7 +380,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addSlider(target : String, minimum : Number, maximum : Number, options : Object = null) : void
+		public function addSlider(target : String, minimum : Number, maximum : Number, options : Object = null) : Component
 		{
 			options = parseOptions(target, options);
 			
@@ -388,7 +390,7 @@ package uk.co.soulwire.gui
 			params.minimum = minimum;
 			params.maximum = maximum;
 			
-			addControl(HUISlider, merge(params, options));
+			return addControl(HUISlider, merge(params, options));
 		}
 		
 		/**
@@ -405,7 +407,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addRange(target1 : String, target2 : String, minimum : Number, maximum : Number, options : Object = null) : void
+		public function addRange(target1 : String, target2 : String, minimum : Number, maximum : Number, options : Object = null) : Component
 		{
 			var target : Array = [target1, target2];
 			
@@ -417,7 +419,7 @@ package uk.co.soulwire.gui
 			params.minimum = minimum;
 			params.maximum = maximum;
 			
-			addControl(HUIRangeSlider, merge(params, options));
+			return addControl(HUIRangeSlider, merge(params, options));
 		}
 		
 		/**
@@ -434,7 +436,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addStepper(target : String, minimum : Number, maximum : Number, options : Object = null) : void
+		public function addStepper(target : String, minimum : Number, maximum : Number, options : Object = null) : Component
 		{
 			options = parseOptions(target, options);
 			
@@ -444,7 +446,7 @@ package uk.co.soulwire.gui
 			params.minimum = minimum;
 			params.maximum = maximum;
 			
-			addControl(NumericStepper, merge(params, options));
+			return addControl(NumericStepper, merge(params, options));
 		}
 		
 		/**
@@ -459,7 +461,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addColour(target : String, options : Object = null) : void
+		public function addColour(target : String, options : Object = null) : Component
 		{
 			options = parseOptions(target, options);
 			
@@ -468,7 +470,7 @@ package uk.co.soulwire.gui
 			params.target = target;
 			params.usePopup = true;
 			
-			addControl(ColorChooser, merge(params, options));
+			return addControl(ColorChooser, merge(params, options));
 		}
 		
 		/**
@@ -485,7 +487,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addComboBox(target : String, items : Array, options : Object = null) : void
+		public function addComboBox(target : String, items : Array, options : Object = null) : Component
 		{
 			options = parseOptions(target, options);
 			
@@ -499,7 +501,7 @@ package uk.co.soulwire.gui
 			params.defaultLabel = targ[prop];
 			params.numVisibleItems = Math.min(items.length, 5);
 			
-			addControl(StyledCombo, merge(params, options));
+			return addControl(StyledCombo, merge(params, options));
 		}
 		
 		/**
@@ -517,7 +519,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addFileChooser(label : String, file : FileReference, onComplete : Function, filter : Array = null, options : Object = null) : void
+		public function addFileChooser(label : String, file : FileReference, onComplete : Function, filter : Array = null, options : Object = null) : Component
 		{
 			options = parseOptions(label, options);
 			
@@ -529,7 +531,7 @@ package uk.co.soulwire.gui
 			params.filter = filter;
 			params.onComplete = onComplete;
 			
-			addControl(FileChooser, merge(params, options));
+			return addControl(FileChooser, merge(params, options));
 		}
 		
 		/**
@@ -546,7 +548,7 @@ package uk.co.soulwire.gui
 		 * you instead pass the label as a property within the options object
 		 */
 		
-		public function addSaveButton(label : String = "Save", options : Object = null) : void
+		public function addSaveButton(label : String = "Save", options : Object = null) : Component
 		{
 			addGroup("Save Current Settings (S)");
 			
@@ -558,6 +560,7 @@ package uk.co.soulwire.gui
 			
 			var button : PushButton = addControl(PushButton, merge(params, options)) as PushButton;
 			button.addEventListener(MouseEvent.CLICK, onSaveButtonClicked);
+			return button;
 		}
 		
 		//	----------------------------------------------------------------
@@ -695,7 +698,7 @@ package uk.co.soulwire.gui
 			}
 		}
 		
-		private function update() : void
+		public function update() : void
 		{
 			var i : int;
 			var j : int;
@@ -1074,6 +1077,7 @@ package uk.co.soulwire.gui
 		}
 	}
 }
+
 import com.bit101.components.ComboBox;
 import com.bit101.components.Component;
 import com.bit101.components.HRangeSlider;

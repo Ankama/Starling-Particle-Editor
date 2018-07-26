@@ -92,13 +92,10 @@ package
             var background : Image = new Image(Texture.fromBitmap(new DEFAULT_BACKGROUND()));
             mStarling.stage.addChildAt(background,0);
             
-            var settings:SettingsModel = new SettingsModel();
+            var settings:SettingsModel = new SettingsModel(XML(new DEFAULT_CONFIG()));
             settings.x = mViewPort.width;
             addChild(settings);
-            
-            var initialConfig:XML = XML(new DEFAULT_CONFIG());
-            
-            var editor:ParticleEditor = new ParticleEditor(settings, initialConfig, (mStarling.root as ParticleView));
+            new ParticleEditor(settings, (mStarling.root as ParticleView));
         }
 	}
 	

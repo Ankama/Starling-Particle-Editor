@@ -34,77 +34,175 @@ package com.onebyonedesign.particleeditor
 	{
         private var mListeners:Vector.<SettingsListener>;
 
-        private var _xPos:Number = 0.0;
-        private var _yPos:Number = 0.0;
-		private var _xPosVar:Number = 0.0;
-		private var _yPosVar:Number = 0.0;
-		private var _maxParts:Number = 500.0;
-		private var _lifeSpan:Number = 2.0;
-		private var _lifeSpanVar:Number = 1.9;
-		private var _startSize:Number = 70.0;
-		private var _startSizeVar:Number = 49.53;
-		private var _finishSize:Number = 10.0;
-		private var _finishSizeVar:Number = 5.0;
-		private var _emitAngle:Number = 270.0;
-		private var _emitAngleVar:Number = 0.0;
+        public static const DEFAULT_DURATION:Number = 2.0;
+
+        private var _infinite:Boolean;
+        private var _duration:Number;
+        private var _xPos:Number;
+        private var _yPos:Number;
+		private var _xPosVar:Number;
+		private var _yPosVar:Number;
+		private var _maxParts:Number;
+		private var _lifeSpan:Number;
+		private var _lifeSpanVar:Number;
+		private var _startSize:Number;
+		private var _startSizeVar:Number;
+		private var _finishSize:Number;
+		private var _finishSizeVar:Number;
+		private var _emitAngle:Number;
+		private var _emitAngleVar:Number;
 		
-		private var _stRot:Number = 0.0;
-		private var _stRotVar:Number = 0.0;
-		private var _endRot:Number = 0.0;
-		private var _endRotVar:Number = 0.0;
+		private var _stRot:Number;
+		private var _stRotVar:Number;
+		private var _endRot:Number;
+		private var _endRotVar:Number;
 		
-		private var _speed:Number = 100;
-		private var _speedVar:Number = 30.0;
-		private var _gravX:Number = 0.0;
-		private var _gravY:Number = 0.0;
-		private var _tanAcc:Number = 0.0;
-		private var _tanAccVar:Number = 0.0;
-		private var _radialAcc:Number = 0.0;
-		private var _radialAccVar:Number = 0.0;
+		private var _speed:Number;
+		private var _speedVar:Number;
+		private var _gravX:Number;
+		private var _gravY:Number;
+		private var _tanAcc:Number;
+		private var _tanAccVar:Number;
+		private var _radialAcc:Number;
+		private var _radialAccVar:Number;
 		
-		private var _emitterType:int = 0;
+		private var _emitterType:int;
 		
-		private var _maxRadius:Number = 100;
-		private var _maxRadiusVar:Number = 0.0;
-		private var _minRadius:Number = 0.0;
-        private var _minRadiusVar:Number = 0.0;
-		private var _degPerSec:Number = 0.0;
-		private var _degPerSecVar:Number = 0.0;
+		private var _maxRadius:Number;
+		private var _maxRadiusVar:Number;
+		private var _minRadius:Number;
+        private var _minRadiusVar:Number;
+		private var _degPerSec:Number;
+		private var _degPerSecVar:Number;
 		
+		private var _sr:Number;
+		private var _sg:Number;
+		private var _sb:Number;
+		private var _sa:Number;
+
+		private var _fr:Number;
+		private var _fg:Number;
+		private var _fb:Number;
+		private var _fa:Number;
 		
-		// <startColor red="1.00" green="0.31" blue="0.00" alpha="0.62"/>
-		private var _sr:Number = 1.0;
-		private var _sg:Number = .31;
-		private var _sb:Number = 0.0;
-		private var _sa:Number = .62;
+		private var _svr:Number;
+		private var _svg:Number;
+		private var _svb:Number;
+		private var _sva:Number;
 		
-		// <finishColor red="1.00" green="0.31" blue="0.00" alpha="0.00"/>
-		private var _fr:Number = 1.0;
-		private var _fg:Number = .31;
-		private var _fb:Number = 0.0;
-		private var _fa:Number = 0.0;
+		private var _fvr:Number;
+		private var _fvg:Number;
+		private var _fvb:Number;
+		private var _fva:Number;
 		
-		private var _svr:Number = 0.0;
-		private var _svg:Number = 0.0;
-		private var _svb:Number = 0.0;
-		private var _sva:Number = 0.0;
+		private var _srcBlend:uint;
+		private var _dstBlend:uint;
+        
+        private var _xml:XML;
 		
-		private var _fvr:Number = 0.0;
-		private var _fvg:Number = 0.0;
-		private var _fvb:Number = 0.0;
-		private var _fva:Number = 0.0;
-		
-		private var _srcBlend:uint = 0x302;
-		private var _dstBlend:uint = 0x01;
-		
-		public function SettingsModel() 
+		public function SettingsModel(xml:XML) 
 		{
             mListeners = new Vector.<SettingsListener>();
+            _xml = xml;
+            _duration = xml.duration.@value;
+            if(_duration == -1)
+            {
+                _infinite = true;
+                _duration = SettingsModel.DEFAULT_DURATION;
+            }
+            else _infinite = false;
+            _maxParts = _xml.maxParticles.@value;
+            _lifeSpan = _xml.particleLifeSpan.@value;
+            _lifeSpanVar = _xml.particleLifespanVariance.@value;
+            _startSize = _xml.startParticleSize.@value;
+            _startSizeVar = _xml.startParticleSizeVariance.@value;
+            _finishSize = _xml.finishParticleSize.@value;
+            _finishSizeVar = _xml.FinishParticleSizeVariance.@value;
+            _emitAngle = _xml.angle.@value;
+            _emitAngleVar = _xml.angleVariance.@value;
+            _stRot = _xml.rotationStart.@value;
+            _stRotVar = _xml.rotationStartVariance.@value;
+            _endRot = _xml.rotationEnd.@value;
+            _endRotVar = _xml.rotationEndVariance.@value;
+            _xPos = _xml.sourcePosition.@x;
+            _yPos = _xml.sourcePosition.@y;
+            _xPosVar = _xml.sourcePositionVariance.@x;
+            _yPosVar = _xml.sourcePositionVariance.@y;
+            _speed = _xml.speed.@value;
+            _speedVar = _xml.speedVariance.@value;
+            _gravX = _xml.gravity.@x;
+            _gravY = _xml.gravity.@y;
+            _tanAcc = _xml.tangentialAcceleration.@value;
+            _tanAccVar = _xml.tangentialAccelVariance.@value;
+            _radialAcc = _xml.radialAcceleration.@value;
+            _radialAccVar = _xml.radialAccelVariance.@value;
+            _maxRadius = _xml.maxRadius.@value;
+            _maxRadiusVar = _xml.maxRadiusVariance.@value;
+            _minRadius = _xml.minRadius.@value;
+            _minRadiusVar = _xml.minRadiusVariance.@value;
+            _degPerSec = _xml.rotatePerSecond.@value;
+            _degPerSecVar = _xml.rotatePerSecondVariance.@value;
+            _sr = _xml.startColor.@red;
+            _sg = _xml.startColor.@green;
+            _sb = _xml.startColor.@blue;
+            _sa = _xml.startColor.@alpha;
+            _fr = _xml.finishColor.@red;
+            _fg = _xml.finishColor.@green;
+            _fb = _xml.finishColor.@blue;
+            _fa = _xml.finishColor.@alpha;
+            _svr = _xml.startColorVariance.@red;
+            _svg = _xml.startColorVariance.@green;
+            _svb = _xml.startColorVariance.@blue;
+            _sva = _xml.startColorVariance.@alpha;
+            _fvr = _xml.finishColorVariance.@red;
+            _fvg = _xml.finishColorVariance.@green;
+            _fvb = _xml.finishColorVariance.@blue;
+            _fva = _xml.finishColorVariance.@alpha;
+            _srcBlend = _xml.blendFuncSource.@value;
+            _dstBlend = _xml.blendFuncDestination.@value;
+            _emitterType = _xml.emitterType.@value;
+        }
+        
+        public function get xml():XML
+        {
+            return _xml;
         }
         
         public function addListener(listener:SettingsListener):void
         {
             mListeners.push(listener);
+        }
+
+        public function get infinite():Boolean
+        {
+            return _infinite;
+        }
+
+        public function set infinite(value:Boolean):void
+        {
+            _infinite = value;
+            _xml.duration.@value = _infinite ? "-1.0" : _duration;
+
+            for each(var listener:SettingsListener in mListeners)
+            {
+                listener.updateDuration(_infinite, _duration);
+            }
+        }
+
+        public function get duration():Number
+        {
+            return _duration;
+        }
+
+        public function set duration(value:Number):void
+        {
+            _duration = value;
+            _xml.duration.@value = _infinite ? "-1.0" : _duration;
+
+            for each(var listener:SettingsListener in mListeners)
+            {
+                listener.updateDuration(_infinite, _duration);
+            }
         }
 
         public function get xPos():Number
@@ -115,6 +213,7 @@ package com.onebyonedesign.particleeditor
         public function set xPos(value:Number):void
         {
             _xPos = value;
+            _xml.sourcePosition.@x = value;
 
             for each(var listener:SettingsListener in mListeners)
             {
@@ -130,6 +229,7 @@ package com.onebyonedesign.particleeditor
         public function set yPos(value:Number):void
         {
             _yPos = value;
+            _xml.sourcePosition.@y = value;
 
             for each(var listener:SettingsListener in mListeners)
             {
@@ -145,6 +245,7 @@ package com.onebyonedesign.particleeditor
         public function set xPosVar(value:Number):void 
         {
             _xPosVar = value;
+            _xml.sourcePositionVariance.@x = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -160,6 +261,7 @@ package com.onebyonedesign.particleeditor
         public function set yPosVar(value:Number):void 
         {
             _yPosVar = value;
+            _xml.sourcePositionVariance.@y = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -175,6 +277,7 @@ package com.onebyonedesign.particleeditor
         public function set maxParts(value:Number):void 
         {
             _maxParts = value;
+            _xml.maxParticles.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -193,6 +296,7 @@ package com.onebyonedesign.particleeditor
                 value = 0.0;
                 
             _lifeSpan = value;
+            _xml.particleLifeSpan.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -211,6 +315,7 @@ package com.onebyonedesign.particleeditor
                 value = 0.0;
                 
             _lifeSpanVar = value;
+            _xml.particleLifespanVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -226,6 +331,7 @@ package com.onebyonedesign.particleeditor
         public function set startSize(value:Number):void 
         {
             _startSize = value;
+            _xml.startParticleSize.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -241,6 +347,7 @@ package com.onebyonedesign.particleeditor
         public function set startSizeVar(value:Number):void 
         {
             _startSizeVar = value;
+            _xml.startParticleSizeVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -256,6 +363,7 @@ package com.onebyonedesign.particleeditor
         public function set finishSize(value:Number):void 
         {
             _finishSize = value;
+            _xml.finishParticleSize.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -274,7 +382,8 @@ package com.onebyonedesign.particleeditor
                 value = 0.0;
                 
             _finishSizeVar = value;
-            
+            _xml.FinishParticleSizeVariance.@value = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateFinishSizeVariance(value);
@@ -289,6 +398,7 @@ package com.onebyonedesign.particleeditor
         public function set emitAngle(value:Number):void 
         {
             _emitAngle = value;
+            _xml.angle.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -304,7 +414,8 @@ package com.onebyonedesign.particleeditor
         public function set emitAngleVar(value:Number):void 
         {
             _emitAngleVar = value;
-            
+            _xml.angleVariance.@value = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateEmitAngleVariance(value);
@@ -319,6 +430,7 @@ package com.onebyonedesign.particleeditor
         public function set stRot(value:Number):void 
         {
             _stRot = value;
+            _xml.rotationStart.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -334,6 +446,7 @@ package com.onebyonedesign.particleeditor
         public function set stRotVar(value:Number):void 
         {
             _stRotVar = value;
+            _xml.rotationStartVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -349,6 +462,7 @@ package com.onebyonedesign.particleeditor
         public function set endRot(value:Number):void 
         {
             _endRot = value;
+            _xml.rotationEnd.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -364,7 +478,8 @@ package com.onebyonedesign.particleeditor
         public function set endRotVar(value:Number):void 
         {
             _endRotVar = value;
-            
+            _xml.rotationEndVariance.@value = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateEndRotationVariance(value);
@@ -379,6 +494,7 @@ package com.onebyonedesign.particleeditor
         public function set speed(value:Number):void 
         {
             _speed = value;
+            _xml.speed.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -394,6 +510,7 @@ package com.onebyonedesign.particleeditor
         public function set speedVar(value:Number):void 
         {
             _speedVar = value;
+            _xml.speedVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -409,6 +526,7 @@ package com.onebyonedesign.particleeditor
         public function set gravX(value:Number):void 
         {
             _gravX = value;
+            _xml.gravity.@x = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -424,6 +542,7 @@ package com.onebyonedesign.particleeditor
         public function set gravY(value:Number):void 
         {
             _gravY = value;
+            _xml.gravity.@y = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -439,6 +558,7 @@ package com.onebyonedesign.particleeditor
         public function set tanAcc(value:Number):void 
         {
             _tanAcc = value;
+            _xml.tangentialAcceleration.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -454,6 +574,7 @@ package com.onebyonedesign.particleeditor
         public function set tanAccVar(value:Number):void 
         {
             _tanAccVar = value;
+            _xml.tangentialAccelVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -469,6 +590,7 @@ package com.onebyonedesign.particleeditor
         public function set radialAcc(value:Number):void 
         {
             _radialAcc = value;
+            _xml.radialAcceleration.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -484,6 +606,7 @@ package com.onebyonedesign.particleeditor
         public function set radialAccVar(value:Number):void 
         {
             _radialAccVar = value;
+            _xml.radialAccelVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -499,6 +622,7 @@ package com.onebyonedesign.particleeditor
         public function set emitterType(value:int):void 
         {
             _emitterType = value;
+            _xml.emitterType.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -514,6 +638,7 @@ package com.onebyonedesign.particleeditor
         public function set maxRadius(value:Number):void 
         {
             _maxRadius = value;
+            _xml.maxRadius.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -529,6 +654,7 @@ package com.onebyonedesign.particleeditor
         public function set maxRadiusVar(value:Number):void 
         {
             _maxRadiusVar = value;
+            _xml.maxRadiusVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -544,6 +670,7 @@ package com.onebyonedesign.particleeditor
         public function set minRadius(value:Number):void 
         {
             _minRadius = value;
+            _xml.minRadius.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -562,6 +689,7 @@ package com.onebyonedesign.particleeditor
                 value = 0.0;
                 
             _minRadiusVar = value;
+            _xml.minRadiusVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -577,6 +705,7 @@ package com.onebyonedesign.particleeditor
         public function set degPerSec(value:Number):void 
         {
             _degPerSec = value;
+            _xml.rotatePerSecond.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -592,6 +721,7 @@ package com.onebyonedesign.particleeditor
         public function set degPerSecVar(value:Number):void 
         {
             _degPerSecVar = value;
+            _xml.rotatePerSecondVariance.@value = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -607,6 +737,7 @@ package com.onebyonedesign.particleeditor
         public function set sr(value:Number):void 
         {
             _sr = value;
+            _xml.startColor.@red = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -622,6 +753,7 @@ package com.onebyonedesign.particleeditor
         public function set sg(value:Number):void 
         {
             _sg = value;
+            _xml.startColor.@green = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -637,6 +769,7 @@ package com.onebyonedesign.particleeditor
         public function set sb(value:Number):void 
         {
             _sb = value;
+            _xml.startColor.@blue = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -652,6 +785,7 @@ package com.onebyonedesign.particleeditor
         public function set sa(value:Number):void 
         {
             _sa = value;
+            _xml.startColor.@alpha = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -667,6 +801,7 @@ package com.onebyonedesign.particleeditor
         public function set fr(value:Number):void 
         {
             _fr = value;
+            _xml.finishColor.@red = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -682,6 +817,7 @@ package com.onebyonedesign.particleeditor
         public function set fg(value:Number):void 
         {
             _fg = value;
+            _xml.finishColor.@green = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -697,6 +833,7 @@ package com.onebyonedesign.particleeditor
         public function set fb(value:Number):void 
         {
             _fb = value;
+            _xml.finishColor.@blue = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -712,6 +849,7 @@ package com.onebyonedesign.particleeditor
         public function set fa(value:Number):void 
         {
             _fa = value;
+            _xml.finishColor.@alpha = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -727,6 +865,7 @@ package com.onebyonedesign.particleeditor
         public function set svr(value:Number):void 
         {
             _svr = value;
+            _xml.startColorVariance.@red = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -742,6 +881,7 @@ package com.onebyonedesign.particleeditor
         public function set svg(value:Number):void 
         {
             _svg = value;
+            _xml.startColorVariance.@green = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -757,6 +897,7 @@ package com.onebyonedesign.particleeditor
         public function set svb(value:Number):void 
         {
             _svb = value;
+            _xml.startColorVariance.@blue = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -772,6 +913,7 @@ package com.onebyonedesign.particleeditor
         public function set sva(value:Number):void 
         {
             _sva = value;
+            _xml.startColorVariance.@alpha = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -787,7 +929,8 @@ package com.onebyonedesign.particleeditor
         public function set fvr(value:Number):void 
         {
             _fvr = value;
-            
+            _xml.finishColorVariance.@red = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateFinishRedVariance(value);
@@ -802,7 +945,8 @@ package com.onebyonedesign.particleeditor
         public function set fvg(value:Number):void 
         {
             _fvg = value;
-            
+            _xml.finishColorVariance.@green = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateFinishGreenVariance(value);
@@ -817,7 +961,8 @@ package com.onebyonedesign.particleeditor
         public function set fvb(value:Number):void 
         {
             _fvb = value;
-            
+            _xml.finishColorVariance.@blue = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateFinishBlueVariance(value);
@@ -832,6 +977,7 @@ package com.onebyonedesign.particleeditor
         public function set fva(value:Number):void 
         {
             _fva = value;
+            _xml.finishColorVariance.@alpha = value;
             
             for each(var listener:SettingsListener in mListeners)
             {
@@ -847,7 +993,8 @@ package com.onebyonedesign.particleeditor
         public function set srcBlend(value:uint):void 
         {
             _srcBlend = value;
-            
+            _xml.blendFuncSource.@value = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateSourceBlend(value);
@@ -862,11 +1009,74 @@ package com.onebyonedesign.particleeditor
         public function set dstBlend(value:uint):void 
         {
             _dstBlend = value;
-            
+            _xml.blendFuncDestination.@value = value;
+
             for each(var listener:SettingsListener in mListeners)
             {
                 listener.updateDestinationBlend(value);
             }
+        }
+
+        /** Randomize all particle settings */
+        public function randomize():void
+        {
+            infinite = Math.random() > 0.5;
+            if(!infinite)
+                duration = randRange(10, 0, 2);
+            emitterType = randRange(1, 0, 0);
+            maxParts = randRange(1000, 1, 2);
+            lifeSpan = randRange(10, 0, 2);
+            lifeSpanVar = randRange(10, 0, 2);
+            startSize = randRange(70, 0, 2);
+            startSizeVar = randRange(70, 0, 2);
+            finishSize = randRange(70, 0, 2);
+            finishSizeVar = randRange(70, 0, 2);
+            emitAngle = randRange(360, 0, 2);
+            emitAngleVar = randRange(360, 0, 2);
+            stRot = randRange(360, 0, 2);
+            stRotVar = randRange(360, 0, 2);
+            endRot = randRange(360, 0, 2);
+            endRotVar = randRange(360, 0, 2);
+            xPosVar = randRange(1000, 0, 2);
+            yPosVar = randRange(1000, 0, 2);
+            speed = randRange(500, 0, 2);
+            speedVar = randRange(500, 0, 2);
+            gravX = randRange(500, -500, 2);
+            gravY = randRange(500, -500, 2);
+            tanAcc = randRange(500, -500, 2);
+            tanAccVar = randRange(500, 0, 2);
+            radialAcc = randRange(500, -500, 2);
+            radialAccVar = randRange(500, 0, 2);
+            maxRadius = randRange(500, 0, 2);
+            maxRadiusVar = randRange(500, 0, 2);
+            minRadius = randRange(500, 0, 2);
+            minRadiusVar = randRange(500, 0, 2);
+            degPerSec = randRange(360, -360, 2);
+            degPerSecVar = randRange(360, 0, 2);
+            sr = randRange(1, 0, 2);
+            sg = randRange(1, 0, 2);
+            sb = randRange(1, 0, 2);
+            sa = randRange(1, 0, 2);
+            fr = randRange(1, 0, 2);
+            fg = randRange(1, 0, 2);
+            fb = randRange(1, 0, 2);
+            fa = randRange(1, 0, 2);
+            svr = randRange(1, 0, 2);
+            svg = randRange(1, 0, 2);
+            svb = randRange(1, 0, 2);
+            sva = randRange(1, 0, 2);
+            fvr = randRange(1, 0, 2);
+            fvg = randRange(1, 0, 2);
+            fvb = randRange(1, 0, 2);
+            fva = randRange(1, 0, 2);
+        }
+
+        /** Create a random number between min and max with decimals decimal places */
+        private function randRange(max:Number, min:Number = 0, decimals:int = 0):Number {
+            if (min > max) return NaN;
+            var rand:Number = Math.random() * (max - min) + min;
+            var d:Number = Math.pow(10, decimals);
+            return ~~((d * rand) + 0.5) / d;
         }
 	}
 

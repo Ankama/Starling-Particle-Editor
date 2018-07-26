@@ -24,8 +24,12 @@
 package com.onebyonedesign.particleeditor 
 {
     import flash.display.BitmapData;
+    import flash.events.TimerEvent;
+    import flash.utils.Timer;
+
     import starling.core.Starling;
     import starling.display.Sprite;
+    import starling.events.Event;
     import starling.events.Touch;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
@@ -69,9 +73,8 @@ package com.onebyonedesign.particleeditor
         
         /** Settings */
         private var mSettings:SettingsModel;
-        
-        /** Particle Config */
-        private var mParticleConfig:ParticleConfiguration;
+
+        private var mRestartTimer:Timer;
         
         public function ParticleView() 
         {
@@ -80,6 +83,8 @@ package com.onebyonedesign.particleeditor
 			BLOB_DATA = new BLOB().bitmapData;
 			HEART_DATA = new HEART().bitmapData;
 			CUSTOM_DATA = new BitmapData(64, 64, true, 0x00000000);
+            mRestartTimer = new Timer(1000,1);
+            mRestartTimer.addEventListener(TimerEvent.TIMER_COMPLETE, recreateSystem);
 			
 			SELECTED_DATA = CIRCLE_DATA;
         }
@@ -89,6 +94,7 @@ package com.onebyonedesign.particleeditor
         {
             mSettings = value;
             mSettings.addListener(this);
+            init();
         }
         
         /** Set the bitmap data for the particle system particle */
@@ -98,13 +104,6 @@ package com.onebyonedesign.particleeditor
             recreateSystem();
         }
         
-        /** Set the particle system config */
-        public function set particleConfig(value:ParticleConfiguration):void
-        {
-            this.mParticleConfig = value;
-            init(mParticleConfig.xml);
-        }
-        
         /** get the particle system particle bitmap data */
         public function get particleData():BitmapData
         {
@@ -112,6 +111,11 @@ package com.onebyonedesign.particleeditor
         }
         
         /* INTERFACE com.onebyonedesign.particleeditor.SettingsListener */
+
+        public function updateDuration(infinite:Boolean, duration:Number):void
+        {
+            recreateSystem();
+        }
 
         public function updateXPos(value:Number):void
         {
@@ -364,25 +368,15 @@ package com.onebyonedesign.particleeditor
         }
         
         /** Initialize the particle system */
-        private function init(cfg:XML):void
+        private function init():void
         {
-			mTexture = Texture.fromBitmapData(SELECTED_DATA);
-			mParticleSystem = new PDParticleSystem(cfg, mTexture);
-            mParticleSystem.x = POSITION_X;
-            mParticleSystem.y = POSITION_Y;
-            mParticleSystem.emitterX = parseFloat(cfg.sourcePosition.attribute("x"));
-            mParticleSystem.emitterY = parseFloat(cfg.sourcePosition.attribute("y"));
-			addChild(mParticleSystem);
-            
-            startSystem();
+            stage.addEventListener(TouchEvent.TOUCH, onTouch);
+            recreateSystem();
         }
-        
-        /** Start the particle system */
-        private function startSystem():void
+
+        private function onComplete(event:Event):void
         {
-			stage.addEventListener(TouchEvent.TOUCH, onTouch);
-			Starling.juggler.add(mParticleSystem);
-			mParticleSystem.start();
+            mRestartTimer.start();
         }
         
 		/** Move the particle system with mouse click and drag */
@@ -400,24 +394,29 @@ package com.onebyonedesign.particleeditor
         }
         
         /** destroy then recreate particle system from updated config */
-        private function recreateSystem():void 
+        private function recreateSystem(event:TimerEvent = null):void
 		{
-            var ex:Number = mParticleSystem.emitterX;
-            var ey:Number = mParticleSystem.emitterY;
-            mParticleSystem.stop();
-            Starling.juggler.remove(mParticleSystem);
-            removeChild(mParticleSystem);
-            mParticleSystem.dispose();
-            
-            mTexture.dispose();
-                
+            mRestartTimer.reset();
+
+            if(mParticleSystem)
+            {
+                mParticleSystem.stop();
+                mParticleSystem.removeEventListener(Event.COMPLETE, onComplete);
+                Starling.juggler.remove(mParticleSystem);
+                removeChild(mParticleSystem);
+                mParticleSystem.dispose();
+
+                mTexture.dispose();
+            }
+
 			mTexture = Texture.fromBitmapData(SELECTED_DATA);
-			mParticleSystem = new PDParticleSystem(mParticleConfig.xml, mTexture);
+			mParticleSystem = new PDParticleSystem(mSettings.xml, mTexture);
             mParticleSystem.x = POSITION_X;
             mParticleSystem.y = POSITION_Y;
-			mParticleSystem.emitterX = ex;
-			mParticleSystem.emitterY = ey;
-			mParticleSystem.start();
+			mParticleSystem.emitterX = mSettings.xPos;
+			mParticleSystem.emitterY = mSettings.yPos;
+            mParticleSystem.addEventListener(Event.COMPLETE, onComplete);
+            mParticleSystem.start(mSettings.infinite ? Number.MAX_VALUE : mSettings.duration);
 			Starling.juggler.add(mParticleSystem);
 			addChild(mParticleSystem);
 		}

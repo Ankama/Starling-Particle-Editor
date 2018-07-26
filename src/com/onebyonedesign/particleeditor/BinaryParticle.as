@@ -1,21 +1,18 @@
 package com.onebyonedesign.particleeditor
 {
     import com.adobe.images.PNGEncoder;
-import com.onebyonedesign.particleeditor.ParticleView;
 
-import flash.display.Bitmap;
+    import flash.display.Bitmap;
 
     import flash.display.BitmapData;
     import flash.display.Loader;
     import flash.display.LoaderInfo;
     import flash.events.Event;
-import flash.system.ImageDecodingPolicy;
-import flash.system.LoaderContext;
-import flash.utils.ByteArray;
+    import flash.utils.ByteArray;
 
-import starling.core.Starling;
+    import starling.core.Starling;
 
-public class BinaryParticle
+    public class BinaryParticle
     {
         private var m_settings : SettingsModel;
         private var m_texture : BitmapData;
@@ -47,6 +44,13 @@ public class BinaryParticle
                 var imgLoader:Loader = new Loader();
                 imgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
                 imgLoader.loadBytes(textureBytes);
+                m_settings.duration = src.readFloat();
+                if(m_settings.duration == -1)
+                {
+                    m_settings.infinite = true;
+                    m_settings.duration = SettingsModel.DEFAULT_DURATION;
+                }
+                else m_settings.infinite = false;
                 m_settings.maxParts = src.readFloat();
                 m_settings.lifeSpan = src.readFloat();
                 m_settings.lifeSpanVar = src.readFloat();
@@ -123,6 +127,7 @@ public class BinaryParticle
             textureBytes.position = 0;
             result.writeUnsignedInt(textureBytes.length);
             result.writeBytes(textureBytes, 0, textureBytes.length);
+            result.writeFloat(m_settings.infinite ? -1 : m_settings.duration);
             result.writeFloat(m_settings.maxParts);
             result.writeFloat(m_settings.lifeSpan);
             result.writeFloat(m_settings.lifeSpanVar);

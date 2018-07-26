@@ -23,17 +23,20 @@
 
 package com.onebyonedesign.particleeditor
 {
-    import com.adobe.images.PNGEncoder;
-    import com.bit101.components.ComboBox;
     import com.bit101.components.Component;
     import com.bit101.components.Label;
     import com.bit101.components.Window;
+
+    import flash.display.DisplayObject;
+
+    import flash.display.DisplayObjectContainer;
+
+    import flash.display.Sprite;
     import flash.events.Event;
     import flash.net.FileFilter;
     import flash.net.FileReference;
     import flash.utils.ByteArray;
-    import nochump.util.zip.ZipEntry;
-    import nochump.util.zip.ZipOutput;
+
     import uk.co.soulwire.gui.SimpleGUI;
 	
 	/**
@@ -47,10 +50,7 @@ package com.onebyonedesign.particleeditor
 		
 		/** UI */
 		private var mGUI:SimpleGUI;
-        
-        /** Particle Configuration */
-        private var mParticleConfig:ParticleConfiguration;
-        
+
         /** Settings */
         private var mSettings:SettingsModel;
         
@@ -77,6 +77,10 @@ package com.onebyonedesign.particleeditor
 			{label:"Dst Color", data:0x306 },
 			{label:"One - Dst Color", data:0x307}
 		];
+
+        private var mGravityGroup:Sprite;
+        private var mRadialGroup:Sprite;
+        private var mDuration:Component;
         
         /**
          * Create a new Particle Editor
@@ -84,15 +88,12 @@ package com.onebyonedesign.particleeditor
          * @param initialConfig
          * @param particleView
          */
-		public function ParticleEditor(settings:SettingsModel, initialConfig:XML, particleView:ParticleView) 
+		public function ParticleEditor(settings:SettingsModel, particleView:ParticleView)
 		{
             mSettings = settings;
-            mParticleConfig = new ParticleConfiguration(initialConfig);
-            mSettings.addListener(mParticleConfig);
             mParticleView = particleView;
-            mParticleView.particleConfig = mParticleConfig;
             mParticleView.settings = mSettings;
-            
+
             initUI();
 		}
 		
@@ -113,9 +114,11 @@ package com.onebyonedesign.particleeditor
 			
 			mGUI.addColumn("Particles");
 			mGUI.addGroup("Emitter Type");
-			mGUI.addComboBox("emitterType", [ { label:"Gravity", data:0 }, { label:"Radial", data:1 } ], { name:"emitterType" } );
+            mGUI.addComboBox("emitterType", [ { label:"Gravity", data:0 }, { label:"Radial", data:1 } ], { name:"emitterType", callback:enableSettings } );
 			
 			mGUI.addGroup("Particle Configuration");
+            mGUI.addToggle("infinite", { label:"Infinite", name:"infinite", callback:updateDurationStatus } );
+            mDuration = mGUI.addSlider("duration", 0.1, 10.0, { label:"Duration", name:"duration" } );
 			mGUI.addSlider("maxParts", 1.0, 1000.0, { label:"Max Particles", name:"maxParts" } );
 			mGUI.addSlider("lifeSpan", 0, 10.0, { label:"Lifespan", name:"lifeSpan" } );
 			mGUI.addSlider("lifeSpanVar", 0, 10.0, { label:"Lifespan Variance", name:"lifeSpanVar" } );
@@ -131,7 +134,7 @@ package com.onebyonedesign.particleeditor
 			mGUI.addSlider("endRotVar", 0, 360.0, { label:"End Rot. Var.", name:"endRotVar" } );
 			
 			mGUI.addColumn("Particle Behavior");
-			mGUI.addGroup("Gravity (gravity emitter)");
+            mGravityGroup = mGUI.addGroup("Gravity (gravity emitter)");
 			mGUI.addSlider("xPosVar", 0.0, 1000.0, { label:"X Variance", name:"xPosVar" } );
 			mGUI.addSlider("yPosVar", 0.0, 1000.0, { label:"Y Variance", name:"yPosVar" } );
 			mGUI.addSlider("speed", 0, 500.0, { label:"Speed", name:"speed" } );
@@ -142,14 +145,17 @@ package com.onebyonedesign.particleeditor
 			mGUI.addSlider("tanAccVar", 0.0, 500, { label:"Tan. Acc. Var", name:"tanAccVar" } );
 			mGUI.addSlider("radialAcc", -500.00, 500.0, { label:"Rad. Acc.", name:"radialAcc" } );
 			mGUI.addSlider("radialAccVar", 0, 500.0, { label:"Rad. Acc. Var.", name:"radialAccVar" } );
-			
-			mGUI.addGroup("Rotation (radial emitter)");
+
+            mRadialGroup = mGUI.addGroup("Rotation (radial emitter)");
 			mGUI.addSlider("maxRadius", 0, 500.0, { label:"Max Radius", name:"maxRadius" } );
 			mGUI.addSlider("maxRadiusVar", 0, 500.0, { label:"Max Rad Variance", name:"maxRadiusVar" } );
 			mGUI.addSlider("minRadius", 0, 500.0, { label:"Min Radius", name:"minRadius" } );
             mGUI.addSlider("minRadiusVar", 0, 500.0, { label:"Min Rad Variance", name:"minRadiusVar" } );
 			mGUI.addSlider("degPerSec", -360.0, 360.0, { label:"Deg/Sec", name:"degPerSec" } );
 			mGUI.addSlider("degPerSecVar", 0.0, 360.0, { label:"Deg/Sec Var.", name:"degPerSecVar" } );
+
+            enableSettings();
+            updateDurationStatus();
 			
 			mGUI.addColumn("Particle Color");
 			mGUI.addGroup("Start");
@@ -178,8 +184,8 @@ package com.onebyonedesign.particleeditor
 			mGUI.addSlider("fva", 0, 1.0, { label:"A", name:"fva", width:150 } );
 			
 			mGUI.addGroup("Blend Function");
-			mGUI.addComboBox("srcBlend", mBlendArray, {  label:"Source", name:"srcBlend" } );
-			mGUI.addComboBox("dstBlend", mBlendArray, { label:"Dest.  ", name:"dstBlend" } );
+            mGUI.addComboBox("srcBlend", mBlendArray, {  label:"Source", name:"srcBlend" } );
+            mGUI.addComboBox("dstBlend", mBlendArray, { label:"Dest.  ", name:"dstBlend" } );
 			
 			mGUI.show();
 		}
@@ -212,7 +218,8 @@ package com.onebyonedesign.particleeditor
 			try
 			{
                 binaryParticle.loadFromByteArray(downloader.data);
-                buildParticleFromXML(mParticleConfig.xml);
+                mGUI.update();
+                updateDurationStatus();
 			}
 			catch (err:Error) 
 			{
@@ -310,353 +317,34 @@ package com.onebyonedesign.particleeditor
         /** Randomize particle settings */
         private function randomizeSettings(o:*):void
         {
-            mParticleConfig.randomize();
-            
-            buildParticleFromXML(mParticleConfig.xml);
+            mSettings.randomize();
         }
-        
-		/** Set all gui and particle settings from loaded .pex file */
-		private function buildParticleFromXML(xml:XML):void 
-		{
-			var i:int = mGUI.components.length;
-			
-			while (i--) 
-			{
-				var comp:Component = mGUI.components[i];
-				var val:Number;
-				var idx:int;
-                
-                switch(comp.name)
-                {
-                    case "emitterType" :
-                        val = parseFloat(xml.emitterType.@value);
-                        switch(val) 
-                        {
-                            case 0:
-                                idx = 0;
-                                break;
-                            case 1 :
-                                idx = 1;
-                                break;
-                            default :
-                                idx = 0;
-                        }
-                        
-                        mSettings.emitterType = idx;
-                        (comp as ComboBox).selectedIndex = idx;
-                        break;
-                        
-                    case "maxParts" :
-                        val = parseFloat(xml.maxParticles.@value);
-                        mSettings.maxParts = val;
-                        break;
-                        
-                    case "lifeSpan" :
-                        val = parseFloat(xml.particleLifeSpan.@value);
-                        mSettings.lifeSpan = val;
-                        break;
-                        
-                    case "lifeSpanVar" :
-                        val = parseFloat(xml.particleLifespanVariance.@value);
-                        mSettings.lifeSpanVar = val;
-                        break;
-                        
-                    case "startSize" :
-                        val = parseFloat(xml.startParticleSize.@value);
-                        mSettings.startSize = val;
-                        break;
-                        
-                    case "startSizeVar" :
-                        val = parseFloat(xml.startParticleSizeVariance.@value);
-                        mSettings.startSizeVar = val;
-                        break;
-                        
-                    case "finishSize" :
-                        val = parseFloat(xml.finishParticleSize.@value);
-                        mSettings.finishSize = val;
-                        break;
-                        
-                    case "finishSizeVar" :
-                        val = parseFloat(xml.FinishParticleSizeVariance.@value);
-                        mSettings.finishSizeVar = val;
-                        break;
-                        
-                    case "emitAngle" :
-                        val = parseFloat(xml.angle.@value);
-                        mSettings.emitAngle = val;
-                        break;
-                        
-                    case "emitAngleVar" :      
-                        val = parseFloat(xml.angleVariance.@value);
-                        mSettings.emitAngleVar = val;
-                        break;
-                        
-                    case "stRot" :
-                        val = parseFloat(xml.rotationStart.@value);
-                        mSettings.stRot = val;
-                        break;
-                        
-                    case "stRotVar" :
-                        val = parseFloat(xml.rotationStartVariance.@value);
-                        mSettings.stRotVar = val;
-                        break;
-                        
-                    case "endRot" :
-                        val = parseFloat(xml.rotationEnd.@value);
-                        mSettings.endRot = val;
-                        break;
-                        
-                    case "endRotVar" :
-                        val = parseFloat(xml.rotationEndVariance.@value);
-                        mSettings.endRotVar = val;
-                        break;
-                        
-                    case "xPosVar" :
-                        val = parseFloat(xml.sourcePositionVariance.@x);
-                        mSettings.xPosVar = val;
-                        break;
-                        
-                    case "yPosVar" :
-                        val = parseFloat(xml.sourcePositionVariance.@y);
-                        mSettings.yPosVar = val;
-                        break;
-                        
-                    case "speed" :
-                        val = parseFloat(xml.speed.@value);
-                        mSettings.speed = val;
-                        break;
-                        
-                    case "speedVar" :
-                        val = parseFloat(xml.speedVariance.@value);
-                        mSettings.speedVar = val;
-                        break;
-                        
-                    case "gravX" :
-                        val = parseFloat(xml.gravity.@x);
-                        mSettings.gravX = val;
-                        break;
-                        
-                    case "gravY" :
-                        val = parseFloat(xml.gravity.@y);
-                        mSettings.gravY = val;
-                        break;
-                        
-                    case "tanAcc" :
-                        val = parseFloat(xml.tangentialAcceleration.@value);
-                        mSettings.tanAcc = val;
-                        break;
-                        
-                    case "tanAccVar" :
-                        val = parseFloat(xml.tangentialAccelVariance.@value);
-                        mSettings.tanAccVar = val;
-                        break;
-                        
-                    case "radialAcc" :
-                        val = parseFloat(xml.radialAcceleration.@value);
-                        mSettings.radialAcc = val;
-                        break;
-                        
-                    case "radialAccVar" :
-                        val = parseFloat(xml.radialAccelVariance.@value);
-                        mSettings.radialAccVar = val;
-                        break;
-                        
-                    case "maxRadius" :
-                        val = parseFloat(xml.maxRadius.@value);
-                        mSettings.maxRadius = val;
-                        break;
-                        
-                    case "maxRadiusVar" :
-                        val = parseFloat(xml.maxRadiusVariance.@value);
-                        mSettings.maxRadiusVar = val;
-                        break;
-                        
-                    case "minRadius" :
-                        val = parseFloat(xml.minRadius.@value);
-                        mSettings.minRadius = val;
-                        break;
-                        
-                    case "minRadiusVar" :
-                        val = parseFloat(xml.minRadiusVariance.@value);
-                        mSettings.minRadiusVar = val;
-                        break;
-                        
-                    case "degPerSec" :
-                        val = parseFloat(xml.rotatePerSecond.@value);
-                        mSettings.degPerSec = val;
-                        break; 
-                        
-                    case "degPerSecVar" :
-                        val = parseFloat(xml.rotatePerSecondVariance.@value);
-                        mSettings.degPerSecVar = val;
-                        break;
-                        
-                    case "sr" :
-                        val = parseFloat(xml.startColor.@red);
-                        mSettings.sr = val;
-                        break;
-                        
-                    case "sg" :
-                        val = parseFloat(xml.startColor.@green);
-                        mSettings.sg = val;
-                        break;
-                        
-                    case "sb" :
-                        val = parseFloat(xml.startColor.@blue);
-                        mSettings.sb = val;
-                        break;
-                        
-                    case "sa" :
-                        val = parseFloat(xml.startColor.@alpha);
-                        mSettings.sa = val;
-                        break;
-                        
-                    case "fr" :
-                        val = parseFloat(xml.finishColor.@red);
-                        mSettings.fr = val;
-                        break;
-                        
-                    case "fg" :
-                        val = parseFloat(xml.finishColor.@green);
-                        mSettings.fg = val;
-                        break
-                        
-                    case "fb" :
-                        val = parseFloat(xml.finishColor.@blue);
-                        mSettings.fb = val;
-                        break;
-                        
-                    case "fa" :
-                        val = parseFloat(xml.finishColor.@alpha);
-                        mSettings.fa = val;
-                        break;
-                        
-                    case "svr" :
-                        val = parseFloat(xml.startColorVariance.@red);
-                        mSettings.svr = val;
-                        break;
-                        
-                    case "svg" :
-                        val = parseFloat(xml.startColorVariance.@green);
-                        mSettings.svg = val;
-                        break;
-                        
-                    case "svb" :
-                        val = parseFloat(xml.startColorVariance.@blue);
-                        mSettings.svb = val;
-                        break;
-                        
-                    case "sva" :
-                        val = parseFloat(xml.startColorVariance.@alpha);
-                        mSettings.sva = val;
-                        break;
-                        
-                    case "fvr" :
-                        val = parseFloat(xml.finishColorVariance.@red);
-                        mSettings.fvr = val;
-                        break;
-                        
-                    case "fvg" :
-                        val = parseFloat(xml.finishColorVariance.@green);
-                        mSettings.fvg = val;
-                        break;
-                        
-                    case "fvb" :
-                        val = parseFloat(xml.finishColorVariance.@blue);
-                        mSettings.fvb = val;
-                        break;
-                        
-                    case "fva" :
-                        val = parseFloat(xml.finishColorVariance.@alpha);
-                        mSettings.fva = val;
-                        break;
-                        
-                    case "srcBlend" :
-                        val = parseFloat(xml.blendFuncSource.@value);
-                        switch(val) 
-                        {
-                            case 0x00 :
-                                idx = 0;
-                                break;
-                            case 0x01 :
-                                idx = 1;
-                                break;
-                            case 0x300 :
-                                idx = 2;
-                                break;
-                            case 0x301 :
-                                idx = 3;
-                                break;
-                            case 0x302 :
-                                idx = 4;
-                                break;
-                            case 0x303 :
-                                idx = 5;
-                                break;
-                            case 0x304 :
-                                idx = 6;
-                                break;
-                            case 0x305 :
-                                idx = 7;
-                                break;
-                            case 0x306 :
-                                idx = 8;
-                                break;
-                            case 0x307 :
-                                idx = 9;
-                                break;	
-                        }
-                        mSettings.srcBlend = val;
-                        (comp as ComboBox).selectedIndex = idx;
-                        break;
-                        
-                    case "dstBlend" :
-                        val = parseFloat(xml.blendFuncDestination.@value);
-                        switch(val) 
-                        {
-                            case 0x00 :
-                                idx = 0;
-                                break;
-                            case 0x01 :
-                                idx = 1;
-                                break;
-                            case 0x300 :
-                                idx = 2;
-                                break;
-                            case 0x301 :
-                                idx = 3;
-                                break;
-                            case 0x302 :
-                                idx = 4;
-                                break;
-                            case 0x303 :
-                                idx = 5;
-                                break;
-                            case 0x304 :
-                                idx = 6;
-                                break;
-                            case 0x305 :
-                                idx = 7;
-                                break;
-                            case 0x306 :
-                                idx = 8;
-                                break;
-                            case 0x307 :
-                                idx = 9;
-                                break;
-                            default :
-                                idx = 1;
-                        }
-                        mSettings.dstBlend = val;
-                        (comp as ComboBox).selectedIndex = idx;
-                        break;
-                        
-                    default :
-                        trace("Couldn't update setting for comp named: '" + comp.name + "'");
-				}
-			}
-			xml = null;
-		}
+
+        private function updateDurationStatus(o:* = null):void
+        {
+            if(mDuration)
+                mDuration.enabled = !mSettings.infinite;
+        }
+
+        /** enable/disable emitter type settings */
+        private function enableSettings(o:* = null):void
+        {
+            var gravity:Boolean = mSettings.emitterType == 0;
+            foreachComponent(mGravityGroup, function(component:Component):void{component.enabled = gravity;});
+            foreachComponent(mRadialGroup, function(component:Component):void{component.enabled = !gravity;});
+        }
+
+        private function foreachComponent(element:DisplayObject, func:Function):void
+        {
+            if(element is Component)
+                func(Component(element));
+            if(element is DisplayObjectContainer)
+            {
+                var container : DisplayObjectContainer = DisplayObjectContainer(element);
+                for(var i:uint = 0 ; i < container.numChildren ; i++)
+                    foreachComponent(container.getChildAt(i), func);
+            }
+        }
 	}
 
 }
