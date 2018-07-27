@@ -23,19 +23,23 @@
 
 package com.onebyonedesign.particleeditor 
 {
+    import com.bit101.components.ProgressBar;
+
     import flash.display.BitmapData;
     import flash.events.TimerEvent;
     import flash.utils.Timer;
 
     import starling.core.Starling;
     import starling.display.Sprite;
+    import starling.events.EnterFrameEvent;
     import starling.events.Event;
     import starling.events.Touch;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
     import starling.extensions.PDParticleSystem;
     import starling.textures.Texture;
-    
+    import starling.utils.MathUtil;
+
     /**
 	 * The Starling particle system view
 	 * @author Devon O.
@@ -75,6 +79,8 @@ package com.onebyonedesign.particleeditor
         private var mSettings:SettingsModel;
 
         private var mRestartTimer:Timer;
+        private var mTimer:Number;
+        private var mProgressBar:ProgressBar;
         
         public function ParticleView() 
         {
@@ -87,6 +93,7 @@ package com.onebyonedesign.particleeditor
             mRestartTimer.addEventListener(TimerEvent.TIMER_COMPLETE, recreateSystem);
 			
 			SELECTED_DATA = CIRCLE_DATA;
+            addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
         }
         
         /** Set the Settings Model */
@@ -95,6 +102,11 @@ package com.onebyonedesign.particleeditor
             mSettings = value;
             mSettings.addListener(this);
             init();
+        }
+
+        public function set progressBar(value:ProgressBar):void
+        {
+            mProgressBar = value;
         }
         
         /** Set the bitmap data for the particle system particle */
@@ -421,6 +433,7 @@ package com.onebyonedesign.particleeditor
         private function recreateSystem(event:TimerEvent = null):void
 		{
             mRestartTimer.reset();
+            mTimer = 0;
 
             if(mParticleSystem)
             {
@@ -444,6 +457,21 @@ package com.onebyonedesign.particleeditor
 			Starling.juggler.add(mParticleSystem);
 			addChild(mParticleSystem);
 		}
+
+        private function enterFrameHandler(event:EnterFrameEvent):void
+        {
+            if(!mSettings.infinite)
+            {
+                mTimer += event.passedTime;
+                mProgressBar.value = mParticleSystem.isEmitting ? MathUtil.clamp(mTimer / mSettings.duration, 0, 1) : 0;
+                mProgressBar.enabled = true;
+            }
+            else
+            {
+                mProgressBar.enabled = false;
+                mProgressBar.value = 0;
+            }
+        }
     }
 
 }

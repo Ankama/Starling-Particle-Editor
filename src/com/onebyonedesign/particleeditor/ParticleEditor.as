@@ -25,6 +25,7 @@ package com.onebyonedesign.particleeditor
 {
     import com.bit101.components.Component;
     import com.bit101.components.Label;
+    import com.bit101.components.ProgressBar;
     import com.bit101.components.Window;
 
     import flash.desktop.NativeApplication;
@@ -127,6 +128,7 @@ package com.onebyonedesign.particleeditor
             mGUI.addButton("Reset Offset", { name:"resetPositionBtn", callback:resetPosition } );
             mGUI.addButton("Reset to Default", { name:"resetAllBtn", callback:resetAll } );
             mGUI.addGroup("Playback");
+            mParticleView.progressBar = mGUI.addControl(ProgressBar, {}) as ProgressBar;
             mGUI.addButton("Play", { name:"playButton", callback:play } );
             mGUI.addButton("Stop", { name:"stopButton", callback:stop } );
             mGUI.addGroup("Random Settings");
@@ -273,7 +275,7 @@ package com.onebyonedesign.particleeditor
             errWindow.setSize(200, 100);
             errWindow.hasCloseButton = true;
             errWindow.addEventListener(Event.CLOSE, onErrClose);
-            var lab:Label = new Label(errWindow.content, 5, 5, label);
+            new Label(errWindow.content, 5, 5, label);
         }
 		
 		/** remove error display window */
@@ -370,6 +372,7 @@ package com.onebyonedesign.particleeditor
         private function randomizeSettings(o:*):void
         {
             mSettings.randomize();
+            updateDurationStatus();
         }
 
         private function updateDurationStatus(o:* = null):void
