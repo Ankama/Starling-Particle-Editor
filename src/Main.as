@@ -44,7 +44,7 @@ package
 	public class Main extends Sprite 
 	{
         [Embed(source="../assets/fire.pex", mimeType="application/octet-stream")]
-		private const DEFAULT_CONFIG:Class;
+		public static const DEFAULT_CONFIG:Class;
 
         [Embed(source="../assets/background.png")]
         private const DEFAULT_BACKGROUND:Class;

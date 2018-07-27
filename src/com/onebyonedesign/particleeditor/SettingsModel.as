@@ -103,6 +103,11 @@ package com.onebyonedesign.particleeditor
 		public function SettingsModel(xml:XML) 
 		{
             mListeners = new Vector.<SettingsListener>();
+            this.xml = xml;
+        }
+
+        public function set xml(xml:XML):void
+        {
             _xml = xml;
             _duration = xml.duration.@value;
             if(_duration == -1)

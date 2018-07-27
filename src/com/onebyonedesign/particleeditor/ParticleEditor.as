@@ -27,6 +27,8 @@ package com.onebyonedesign.particleeditor
     import com.bit101.components.Label;
     import com.bit101.components.Window;
 
+    import flash.desktop.NativeApplication;
+
     import flash.display.DisplayObject;
 
     import flash.display.DisplayObjectContainer;
@@ -35,6 +37,7 @@ package com.onebyonedesign.particleeditor
     import flash.events.Event;
     import flash.net.FileFilter;
     import flash.net.FileReference;
+    import flash.net.SharedObject;
     import flash.utils.ByteArray;
 
     import uk.co.soulwire.gui.SimpleGUI;
@@ -92,10 +95,23 @@ package com.onebyonedesign.particleeditor
 		{
             mSettings = settings;
             mParticleView = particleView;
+
+            var backup:SharedObject = SharedObject.getLocal("backup");
+            if(backup && backup.data && backup.data.particle)
+                loadFromByteArray(backup.data.particle);
+
             mParticleView.settings = mSettings;
 
             initUI();
+            NativeApplication.nativeApplication.addEventListener(Event.EXITING, onShutdown);
 		}
+
+        private function onShutdown(event:Event):void
+        {
+            var backup:SharedObject = SharedObject.getLocal("backup");
+            backup.data.particle = getBytes();
+            backup.flush();
+        }
 		
 		/** Create the SimpleGUI instance */
 		private function initUI():void 
@@ -108,6 +124,8 @@ package com.onebyonedesign.particleeditor
 			mGUI.addGroup("Edit");
 			mGUI.addButton("Edit Texture", { name:"editTexBtn", callback:editTexture } );
 			mGUI.addButton("Edit Background", { name:"editBGBtn", callback:editBackground } );
+            mGUI.addButton("Reset Offset", { name:"resetPositionBtn", callback:resetPosition } );
+            mGUI.addButton("Reset to Default", { name:"resetAllBtn", callback:resetAll } );
             mGUI.addGroup("Playback");
             mGUI.addButton("Play", { name:"playButton", callback:play } );
             mGUI.addButton("Stop", { name:"stopButton", callback:stop } );
@@ -220,16 +238,20 @@ package com.onebyonedesign.particleeditor
 			downloader.addEventListener(Event.COMPLETE, onLoadComplete);
 			downloader.load();
 		}
+
+        private function loadFromByteArray(bytes:ByteArray):void
+        {
+            var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
+            binaryParticle.loadFromByteArray(bytes);
+        }
 		
 		/** After particle file has been loaded */
 		private function onLoadComplete(event:Event):void 
 		{
 			downloader.removeEventListener(Event.COMPLETE, onLoadComplete);
-
-            var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
 			try
 			{
-                binaryParticle.loadFromByteArray(downloader.data);
+                loadFromByteArray(downloader.data);
                 mGUI.update();
                 updateDurationStatus();
 			}
@@ -260,15 +282,20 @@ package com.onebyonedesign.particleeditor
 			var win:Window = event.currentTarget as Window;
 			win.parent.removeChild(win);
 		}
+
+        private function getBytes():ByteArray
+        {
+            var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
+            binaryParticle.texture = mParticleView.particleData;
+            var filedata:ByteArray = binaryParticle.toByteArray();
+            filedata.position = 0;
+            return filedata;
+        }
         
 		/** Save particle texture image source and config file to .d3fx */
 		private function saveParticle(o:*):void
 		{
-            var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
-            binaryParticle.texture = mParticleView.particleData;
-            var filedata:ByteArray = binaryParticle.toByteArray();
-			filedata.position = 0;
-			downloader.save(filedata, "particle.d3fx");
+			downloader.save(getBytes(), "particle.d3fx");
 		}
         
         //
@@ -325,7 +352,20 @@ package com.onebyonedesign.particleeditor
 			mSettings.removeChild(mBGEditor);
 			mBGEditor = null;
 		}
-        
+
+        private function resetPosition(o:*):void
+        {
+            mSettings.xPos = 0;
+            mSettings.yPos = 0;
+        }
+
+        private function resetAll(o:*):void
+        {
+            mSettings.xml = XML(new Main.DEFAULT_CONFIG());
+            mParticleView.particleData = new ParticleView.DEFAULT_PARTICLE().bitmapData;
+            mParticleView.play();
+        }
+
         /** Randomize particle settings */
         private function randomizeSettings(o:*):void
         {
