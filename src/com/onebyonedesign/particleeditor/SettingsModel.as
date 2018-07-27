@@ -35,8 +35,11 @@ package com.onebyonedesign.particleeditor
         private var mListeners:Vector.<SettingsListener>;
 
         public static const DEFAULT_DURATION:Number = 2.0;
+        public static const DEFAULT_SHOT:Number = 1.0;
 
         private var _infinite:Boolean;
+        private var _shot:Number;
+        private var _displayShot:Boolean;
         private var _duration:Number;
         private var _xPos:Number;
         private var _yPos:Number;
@@ -113,9 +116,12 @@ package com.onebyonedesign.particleeditor
             if(_duration == -1)
             {
                 _infinite = true;
-                _duration = SettingsModel.DEFAULT_DURATION;
+                _duration = DEFAULT_DURATION;
             }
-            else _infinite = false;
+            else
+                _infinite = false;
+            _displayShot = true;
+            _shot = DEFAULT_SHOT;
             _maxParts = _xml.maxParticles.@value;
             _lifeSpan = _xml.particleLifeSpan.@value;
             _lifeSpanVar = _xml.particleLifespanVariance.@value;
@@ -200,6 +206,26 @@ package com.onebyonedesign.particleeditor
             _duration = value;
             _xml.duration.@value = _infinite ? "-1.0" : _duration;
             dispatchUpdate(function(listener:SettingsListener):void{listener.updateDuration(_infinite, _duration);});
+        }
+
+        public function get shot():Number
+        {
+            return _shot;
+        }
+
+        public function set shot(value:Number):void
+        {
+            _shot = value;
+        }
+
+        public function get displayShot():Boolean
+        {
+            return _displayShot;
+        }
+
+        public function set displayShot(value:Boolean):void
+        {
+            _displayShot = value;
         }
 
         public function get xPos():Number
@@ -828,7 +854,10 @@ package com.onebyonedesign.particleeditor
         {
             infinite = Math.random() > 0.5;
             if(!infinite)
+            {
                 duration = randRange(10, 0, 2);
+                shot = randRange(duration, 0, 2);
+            }
             emitterType = randRange(1, 0, 0);
             maxParts = randRange(1000, 1, 2);
             lifeSpan = randRange(10, 0, 2);

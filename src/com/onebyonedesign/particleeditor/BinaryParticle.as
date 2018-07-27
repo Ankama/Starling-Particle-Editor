@@ -45,10 +45,12 @@ package com.onebyonedesign.particleeditor
                 imgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
                 imgLoader.loadBytes(textureBytes);
                 m_settings.duration = src.readFloat();
-                if(m_settings.duration == -1)
+                m_settings.shot = src.readFloat();
+                if(m_settings.duration == -1 || m_settings.shot == -1)
                 {
                     m_settings.infinite = true;
                     m_settings.duration = SettingsModel.DEFAULT_DURATION;
+                    m_settings.shot = SettingsModel.DEFAULT_SHOT;
                 }
                 else m_settings.infinite = false;
                 m_settings.maxParts = src.readFloat();
@@ -128,6 +130,7 @@ package com.onebyonedesign.particleeditor
             result.writeUnsignedInt(textureBytes.length);
             result.writeBytes(textureBytes, 0, textureBytes.length);
             result.writeFloat(m_settings.infinite ? -1 : m_settings.duration);
+            result.writeFloat(m_settings.infinite ? -1 : m_settings.shot);
             result.writeFloat(m_settings.maxParts);
             result.writeFloat(m_settings.lifeSpan);
             result.writeFloat(m_settings.lifeSpanVar);

@@ -23,7 +23,9 @@
 
 package com.onebyonedesign.particleeditor
 {
+    import com.bit101.components.CheckBox;
     import com.bit101.components.Component;
+    import com.bit101.components.HUISlider;
     import com.bit101.components.Label;
     import com.bit101.components.ProgressBar;
     import com.bit101.components.Window;
@@ -84,7 +86,9 @@ package com.onebyonedesign.particleeditor
 
         private var mGravityGroup:Sprite;
         private var mRadialGroup:Sprite;
-        private var mDuration:Component;
+        private var mDuration:HUISlider;
+        private var mShot:HUISlider;
+        private var mDisplayShot:CheckBox;
         
         /**
          * Create a new Particle Editor
@@ -140,7 +144,9 @@ package com.onebyonedesign.particleeditor
 			
 			mGUI.addGroup("Particle Configuration");
             mGUI.addToggle("infinite", { label:"Infinite", name:"infinite", callback:updateDurationStatus } );
-            mDuration = mGUI.addSlider("duration", 0.1, 10.0, { label:"Duration", name:"duration" } );
+            mDuration = mGUI.addSlider("duration", 0.1, 10.0, { label:"Duration", name:"duration", callback:updateDuration } ) as HUISlider;
+            mShot = mGUI.addSlider("shot", 0.1, 10.0, { label:"Label Shot", name:"shot" } ) as HUISlider;
+            mDisplayShot = mGUI.addToggle("displayShot", { label:"Display shot", name:"displayShot" } ) as CheckBox;
 			mGUI.addSlider("maxParts", 1.0, 1000.0, { label:"Max Particles", name:"maxParts" } );
 			mGUI.addSlider("lifeSpan", 0, 10.0, { label:"Lifespan", name:"lifeSpan" } );
 			mGUI.addSlider("lifeSpanVar", 0, 10.0, { label:"Lifespan Variance", name:"lifeSpanVar" } );
@@ -178,6 +184,7 @@ package com.onebyonedesign.particleeditor
 
             enableSettings();
             updateDurationStatus();
+            updateDuration();
 			
 			mGUI.addColumn("Particle Color");
 			mGUI.addGroup("Start");
@@ -256,6 +263,7 @@ package com.onebyonedesign.particleeditor
                 loadFromByteArray(downloader.data);
                 mGUI.update();
                 updateDurationStatus();
+                updateDuration();
 			}
 			catch (err:Error) 
 			{
@@ -364,6 +372,8 @@ package com.onebyonedesign.particleeditor
         private function resetAll(o:*):void
         {
             mSettings.xml = XML(new Main.DEFAULT_CONFIG());
+            updateDurationStatus();
+            updateDuration();
             mParticleView.particleData = new ParticleView.DEFAULT_PARTICLE().bitmapData;
             mParticleView.play();
         }
@@ -373,12 +383,27 @@ package com.onebyonedesign.particleeditor
         {
             mSettings.randomize();
             updateDurationStatus();
+            updateDuration();
+        }
+
+        private function updateDuration(o:* = null):void
+        {
+            if(mShot && mDuration)
+            {
+                mShot.maximum = mSettings.duration;
+                mShot.value = mSettings.shot;
+                mSettings.shot = mShot.value;
+            }
         }
 
         private function updateDurationStatus(o:* = null):void
         {
             if(mDuration)
                 mDuration.enabled = !mSettings.infinite;
+            if(mShot)
+                mShot.enabled = !mSettings.infinite;
+            if(mDisplayShot)
+                mDisplayShot.enabled = !mSettings.infinite;
         }
 
         /** enable/disable emitter type settings */

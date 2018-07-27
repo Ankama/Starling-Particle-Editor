@@ -37,7 +37,11 @@ package com.onebyonedesign.particleeditor
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
     import starling.extensions.PDParticleSystem;
+    import starling.filters.GlowFilter;
+    import starling.text.TextField;
+    import starling.text.TextFormat;
     import starling.textures.Texture;
+    import starling.utils.Align;
     import starling.utils.MathUtil;
 
     /**
@@ -81,6 +85,7 @@ package com.onebyonedesign.particleeditor
         private var mRestartTimer:Timer;
         private var mTimer:Number;
         private var mProgressBar:ProgressBar;
+        private var mShot:TextField;
         
         public function ParticleView() 
         {
@@ -91,7 +96,16 @@ package com.onebyonedesign.particleeditor
 			CUSTOM_DATA = new BitmapData(64, 64, true, 0x00000000);
             mRestartTimer = new Timer(1000,1);
             mRestartTimer.addEventListener(TimerEvent.TIMER_COMPLETE, recreateSystem);
-			
+            mShot = new TextField(100, 50, "SHOT !");
+            var tf:TextFormat = new TextFormat();
+            tf.size = 20;
+            tf.color = 0xFFFFFF;
+            tf.horizontalAlign = Align.CENTER;
+            mShot.format = tf;
+            addChild(mShot);
+            mShot.alpha = 0;
+            mShot.filter = new GlowFilter(0x000000, 1, 2, 1);
+
 			SELECTED_DATA = CIRCLE_DATA;
             addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
         }
@@ -460,8 +474,20 @@ package com.onebyonedesign.particleeditor
 
         private function enterFrameHandler(event:EnterFrameEvent):void
         {
+            mShot.alpha = !mSettings.infinite && mSettings.displayShot ? mShot.alpha - event.passedTime : 0;
+            mShot.y -= event.passedTime * 50;
+            mShot.scale -= event.passedTime * 0.5;
+            mShot.x = POSITION_X - mShot.width * 0.5;
             if(!mSettings.infinite)
             {
+                if(!mSettings.infinite && mSettings.displayShot && mTimer < mSettings.shot && mTimer + event.passedTime >= mSettings.shot)
+                {
+                    mShot.alpha = 1;
+                    mShot.y = POSITION_Y - 125;
+                    mShot.scale = 1;
+                    mShot.x = POSITION_X - mShot.width * 0.5;
+                }
+
                 mTimer += event.passedTime;
                 mProgressBar.value = mParticleSystem.isEmitting ? MathUtil.clamp(mTimer / mSettings.duration, 0, 1) : 0;
                 mProgressBar.enabled = true;
