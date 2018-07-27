@@ -366,6 +366,30 @@ package com.onebyonedesign.particleeditor
         {
 			recreateSystem();
         }
+
+        public function update():void
+        {
+            if(mParticleSystem && !mParticleSystem.hasEventListener(Event.COMPLETE))
+            {
+                mParticleSystem.addEventListener(Event.COMPLETE, onComplete);
+                mParticleSystem.start(mSettings.infinite ? Number.MAX_VALUE : mSettings.duration);
+            }
+        }
+
+        public function stop():void
+        {
+            if(mParticleSystem)
+            {
+                mParticleSystem.stop();
+                mParticleSystem.removeEventListener(Event.COMPLETE, onComplete);
+            }
+            mRestartTimer.reset();
+        }
+
+        public function play():void
+        {
+            recreateSystem();
+        }
         
         /** Initialize the particle system */
         private function init():void

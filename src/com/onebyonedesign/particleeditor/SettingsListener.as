@@ -26,6 +26,7 @@ package com.onebyonedesign.particleeditor
     
     public interface SettingsListener 
     {
+        function update():void;
         function updateDuration(infinite:Boolean, duration:Number):void;
         function updateXPos(value:Number):void;
         function updateYPos(value:Number):void;

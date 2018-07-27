@@ -101,14 +101,16 @@ package com.onebyonedesign.particleeditor
 		private function initUI():void 
 		{
 			mGUI = new SimpleGUI(mSettings, "General");
-			
-			mGUI.addGroup("Save");
-			mGUI.addButton("Export Particle", { name:"savePartBtn", callback:saveParticle } );
-			mGUI.addGroup("Load");
-			mGUI.addButton("Load Particle", { name:"loadButton", callback:onLoad } );
+
+            mGUI.addGroup("File");
+            mGUI.addButton("Load", { name:"loadButton", callback:onLoad } );
+			mGUI.addButton("Save", { name:"savePartBtn", callback:saveParticle } );
 			mGUI.addGroup("Edit");
 			mGUI.addButton("Edit Texture", { name:"editTexBtn", callback:editTexture } );
 			mGUI.addButton("Edit Background", { name:"editBGBtn", callback:editBackground } );
+            mGUI.addGroup("Playback");
+            mGUI.addButton("Play", { name:"playButton", callback:play } );
+            mGUI.addButton("Stop", { name:"stopButton", callback:stop } );
             mGUI.addGroup("Random Settings");
             mGUI.addButton("Randomize!", { name:"randomSettings", callback:randomizeSettings } );
 			
@@ -200,6 +202,16 @@ package com.onebyonedesign.particleeditor
 			downloader.addEventListener(Event.SELECT, onLoadSelect);
 			downloader.browse([new FileFilter("Particle Files (*.d3fx)", "*.d3fx")]);
 		}
+
+        private function play(o:*):void
+        {
+            mParticleView.play();
+        }
+
+        private function stop(o:*):void
+        {
+            mParticleView.stop();
+        }
 		
 		/** After selecting particle file to load */
 		private function onLoadSelect(event:Event):void

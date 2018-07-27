@@ -182,11 +182,7 @@ package com.onebyonedesign.particleeditor
         {
             _infinite = value;
             _xml.duration.@value = _infinite ? "-1.0" : _duration;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateDuration(_infinite, _duration);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateDuration(_infinite, _duration);});
         }
 
         public function get duration():Number
@@ -198,11 +194,7 @@ package com.onebyonedesign.particleeditor
         {
             _duration = value;
             _xml.duration.@value = _infinite ? "-1.0" : _duration;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateDuration(_infinite, _duration);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateDuration(_infinite, _duration);});
         }
 
         public function get xPos():Number
@@ -214,11 +206,7 @@ package com.onebyonedesign.particleeditor
         {
             _xPos = value;
             _xml.sourcePosition.@x = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateXPos(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateXPos(value);});
         }
 
         public function get yPos():Number
@@ -230,11 +218,7 @@ package com.onebyonedesign.particleeditor
         {
             _yPos = value;
             _xml.sourcePosition.@y = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateYPos(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateYPos(value);});
         }
         
         public function get xPosVar():Number 
@@ -246,11 +230,7 @@ package com.onebyonedesign.particleeditor
         {
             _xPosVar = value;
             _xml.sourcePositionVariance.@x = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateXPosVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateXPosVariance(value);});
         }
         
         public function get yPosVar():Number 
@@ -262,11 +242,7 @@ package com.onebyonedesign.particleeditor
         {
             _yPosVar = value;
             _xml.sourcePositionVariance.@y = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateYPosVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateYPosVariance(value);});
         }
         
         public function get maxParts():Number 
@@ -278,11 +254,7 @@ package com.onebyonedesign.particleeditor
         {
             _maxParts = value;
             _xml.maxParticles.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateMaxParticles(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateMaxParticles(value);});
         }
         
         public function get lifeSpan():Number 
@@ -297,11 +269,7 @@ package com.onebyonedesign.particleeditor
                 
             _lifeSpan = value;
             _xml.particleLifeSpan.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateLifeSpan(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateLifeSpan(value);});
         }
         
         public function get lifeSpanVar():Number 
@@ -316,11 +284,7 @@ package com.onebyonedesign.particleeditor
                 
             _lifeSpanVar = value;
             _xml.particleLifespanVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateLifeSpanVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateLifeSpanVariance(value);});
         }
         
         public function get startSize():Number 
@@ -332,11 +296,7 @@ package com.onebyonedesign.particleeditor
         {
             _startSize = value;
             _xml.startParticleSize.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartSize(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartSize(value);});
         }
         
         public function get startSizeVar():Number 
@@ -348,11 +308,7 @@ package com.onebyonedesign.particleeditor
         {
             _startSizeVar = value;
             _xml.startParticleSizeVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartSizeVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartSizeVariance(value);});
         }
         
         public function get finishSize():Number 
@@ -364,11 +320,7 @@ package com.onebyonedesign.particleeditor
         {
             _finishSize = value;
             _xml.finishParticleSize.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishSize(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishSize(value);});
         }
         
         public function get finishSizeVar():Number 
@@ -383,11 +335,7 @@ package com.onebyonedesign.particleeditor
                 
             _finishSizeVar = value;
             _xml.FinishParticleSizeVariance.@value = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishSizeVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishSizeVariance(value);});
         }
         
         public function get emitAngle():Number 
@@ -399,11 +347,7 @@ package com.onebyonedesign.particleeditor
         {
             _emitAngle = value;
             _xml.angle.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateEmitAngle(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateEmitAngle(value);});
         }
         
         public function get emitAngleVar():Number 
@@ -415,11 +359,7 @@ package com.onebyonedesign.particleeditor
         {
             _emitAngleVar = value;
             _xml.angleVariance.@value = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateEmitAngleVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateEmitAngleVariance(value);});
         }
         
         public function get stRot():Number 
@@ -431,11 +371,7 @@ package com.onebyonedesign.particleeditor
         {
             _stRot = value;
             _xml.rotationStart.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartRotation(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartRotation(value);});
         }
         
         public function get stRotVar():Number 
@@ -447,11 +383,7 @@ package com.onebyonedesign.particleeditor
         {
             _stRotVar = value;
             _xml.rotationStartVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartRotationVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartRotationVariance(value);});
         }
         
         public function get endRot():Number 
@@ -463,11 +395,7 @@ package com.onebyonedesign.particleeditor
         {
             _endRot = value;
             _xml.rotationEnd.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateEndRotation(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateEndRotation(value);});
         }
         
         public function get endRotVar():Number 
@@ -479,11 +407,7 @@ package com.onebyonedesign.particleeditor
         {
             _endRotVar = value;
             _xml.rotationEndVariance.@value = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateEndRotationVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateEndRotationVariance(value);});
         }
         
         public function get speed():Number 
@@ -495,11 +419,7 @@ package com.onebyonedesign.particleeditor
         {
             _speed = value;
             _xml.speed.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateSpeed(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateSpeed(value);});
         }
         
         public function get speedVar():Number 
@@ -511,11 +431,7 @@ package com.onebyonedesign.particleeditor
         {
             _speedVar = value;
             _xml.speedVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateSpeedVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateSpeedVariance(value);});
         }
         
         public function get gravX():Number 
@@ -527,11 +443,7 @@ package com.onebyonedesign.particleeditor
         {
             _gravX = value;
             _xml.gravity.@x = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateGravityX(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateGravityX(value);});
         }
         
         public function get gravY():Number 
@@ -543,11 +455,7 @@ package com.onebyonedesign.particleeditor
         {
             _gravY = value;
             _xml.gravity.@y = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateGravityY(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateGravityY(value);});
         }
         
         public function get tanAcc():Number 
@@ -559,11 +467,7 @@ package com.onebyonedesign.particleeditor
         {
             _tanAcc = value;
             _xml.tangentialAcceleration.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateTanAcceleration(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateTanAcceleration(value);});
         }
         
         public function get tanAccVar():Number 
@@ -575,11 +479,7 @@ package com.onebyonedesign.particleeditor
         {
             _tanAccVar = value;
             _xml.tangentialAccelVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateTanAccelerationVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateTanAccelerationVariance(value);});
         }
         
         public function get radialAcc():Number 
@@ -591,11 +491,7 @@ package com.onebyonedesign.particleeditor
         {
             _radialAcc = value;
             _xml.radialAcceleration.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateRadialAcceleration(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateRadialAcceleration(value);});
         }
         
         public function get radialAccVar():Number 
@@ -607,11 +503,7 @@ package com.onebyonedesign.particleeditor
         {
             _radialAccVar = value;
             _xml.radialAccelVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateRadialAccelerationVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateRadialAccelerationVariance(value);});
         }
         
         public function get emitterType():int 
@@ -623,11 +515,7 @@ package com.onebyonedesign.particleeditor
         {
             _emitterType = value;
             _xml.emitterType.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateEmitterType(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateEmitterType(value);});
         }
         
         public function get maxRadius():Number 
@@ -639,11 +527,7 @@ package com.onebyonedesign.particleeditor
         {
             _maxRadius = value;
             _xml.maxRadius.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateMaxRadius(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateMaxRadius(value);});
         }
         
         public function get maxRadiusVar():Number 
@@ -655,11 +539,7 @@ package com.onebyonedesign.particleeditor
         {
             _maxRadiusVar = value;
             _xml.maxRadiusVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateMaxRadiusVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateMaxRadiusVariance(value);});
         }
         
         public function get minRadius():Number 
@@ -671,11 +551,7 @@ package com.onebyonedesign.particleeditor
         {
             _minRadius = value;
             _xml.minRadius.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateMinRadius(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateMinRadius(value);});
         }
         
         public function get minRadiusVar():Number
@@ -690,11 +566,7 @@ package com.onebyonedesign.particleeditor
                 
             _minRadiusVar = value;
             _xml.minRadiusVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateMinRadiusVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateMinRadiusVariance(value);});
         }
         
         public function get degPerSec():Number 
@@ -706,11 +578,7 @@ package com.onebyonedesign.particleeditor
         {
             _degPerSec = value;
             _xml.rotatePerSecond.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateDegreesPerSecond(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateDegreesPerSecond(value);});
         }
         
         public function get degPerSecVar():Number 
@@ -722,11 +590,7 @@ package com.onebyonedesign.particleeditor
         {
             _degPerSecVar = value;
             _xml.rotatePerSecondVariance.@value = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateDegreesPerSecondVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateDegreesPerSecondVariance(value);});
         }
         
         public function get sr():Number 
@@ -738,11 +602,7 @@ package com.onebyonedesign.particleeditor
         {
             _sr = value;
             _xml.startColor.@red = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartRed(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartRed(value);});
         }
         
         public function get sg():Number 
@@ -754,11 +614,7 @@ package com.onebyonedesign.particleeditor
         {
             _sg = value;
             _xml.startColor.@green = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartGreen(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartGreen(value);});
         }
         
         public function get sb():Number 
@@ -770,11 +626,7 @@ package com.onebyonedesign.particleeditor
         {
             _sb = value;
             _xml.startColor.@blue = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartBlue(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartBlue(value);});
         }
         
         public function get sa():Number 
@@ -786,11 +638,7 @@ package com.onebyonedesign.particleeditor
         {
             _sa = value;
             _xml.startColor.@alpha = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartAlpha(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartAlpha(value);});
         }
         
         public function get fr():Number 
@@ -802,11 +650,7 @@ package com.onebyonedesign.particleeditor
         {
             _fr = value;
             _xml.finishColor.@red = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishRed(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishRed(value);});
         }
         
         public function get fg():Number 
@@ -818,11 +662,7 @@ package com.onebyonedesign.particleeditor
         {
             _fg = value;
             _xml.finishColor.@green = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishGreen(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishGreen(value);});
         }
         
         public function get fb():Number 
@@ -834,11 +674,7 @@ package com.onebyonedesign.particleeditor
         {
             _fb = value;
             _xml.finishColor.@blue = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishBlue(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishBlue(value);});
         }
         
         public function get fa():Number 
@@ -850,11 +686,7 @@ package com.onebyonedesign.particleeditor
         {
             _fa = value;
             _xml.finishColor.@alpha = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishAlpha(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishAlpha(value);});
         }
         
         public function get svr():Number 
@@ -866,11 +698,7 @@ package com.onebyonedesign.particleeditor
         {
             _svr = value;
             _xml.startColorVariance.@red = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartRedVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartRedVariance(value);});
         }
         
         public function get svg():Number 
@@ -882,11 +710,7 @@ package com.onebyonedesign.particleeditor
         {
             _svg = value;
             _xml.startColorVariance.@green = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartGreenVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartGreenVariance(value);});
         }
         
         public function get svb():Number 
@@ -898,11 +722,7 @@ package com.onebyonedesign.particleeditor
         {
             _svb = value;
             _xml.startColorVariance.@blue = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartBlueVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartBlueVariance(value);});
         }
         
         public function get sva():Number 
@@ -914,11 +734,7 @@ package com.onebyonedesign.particleeditor
         {
             _sva = value;
             _xml.startColorVariance.@alpha = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateStartAlphaVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateStartAlphaVariance(value);});
         }
         
         public function get fvr():Number 
@@ -930,11 +746,7 @@ package com.onebyonedesign.particleeditor
         {
             _fvr = value;
             _xml.finishColorVariance.@red = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishRedVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishRedVariance(value);});
         }
         
         public function get fvg():Number 
@@ -946,11 +758,7 @@ package com.onebyonedesign.particleeditor
         {
             _fvg = value;
             _xml.finishColorVariance.@green = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishGreenVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishGreenVariance(value);});
         }
         
         public function get fvb():Number 
@@ -962,11 +770,7 @@ package com.onebyonedesign.particleeditor
         {
             _fvb = value;
             _xml.finishColorVariance.@blue = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishBlueVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishBlueVariance(value);});
         }
         
         public function get fva():Number 
@@ -978,11 +782,7 @@ package com.onebyonedesign.particleeditor
         {
             _fva = value;
             _xml.finishColorVariance.@alpha = value;
-            
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateFinishAlphaVariance(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateFinishAlphaVariance(value);});
         }
         
         public function get srcBlend():uint 
@@ -994,11 +794,7 @@ package com.onebyonedesign.particleeditor
         {
             _srcBlend = value;
             _xml.blendFuncSource.@value = value;
-
-            for each(var listener:SettingsListener in mListeners)
-            {
-                listener.updateSourceBlend(value);
-            }
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateSourceBlend(value);});
         }
         
         public function get dstBlend():uint 
@@ -1010,10 +806,15 @@ package com.onebyonedesign.particleeditor
         {
             _dstBlend = value;
             _xml.blendFuncDestination.@value = value;
+            dispatchUpdate(function(listener:SettingsListener):void{listener.updateDestinationBlend(value);});
+        }
 
+        private function dispatchUpdate(func:Function):void
+        {
             for each(var listener:SettingsListener in mListeners)
             {
-                listener.updateDestinationBlend(value);
+                func(listener);
+                listener.update();
             }
         }
 
