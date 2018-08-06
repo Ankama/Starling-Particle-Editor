@@ -409,6 +409,7 @@ package com.onebyonedesign.particleeditor
                 mParticleSystem.stop();
                 mParticleSystem.removeEventListener(Event.COMPLETE, onComplete);
             }
+            mTimer = 0;
             mRestartTimer.reset();
         }
 
@@ -488,8 +489,13 @@ package com.onebyonedesign.particleeditor
                     mShot.x = POSITION_X - mShot.width * 0.5;
                 }
 
-                mTimer += event.passedTime;
-                mProgressBar.value = mParticleSystem.isEmitting ? MathUtil.clamp(mTimer / mSettings.duration, 0, 1) : 0;
+                if(mParticleSystem.isEmitting)
+                {
+                    mTimer += event.passedTime;
+                    mProgressBar.value = MathUtil.clamp(mTimer / mSettings.duration, 0, 1) ;
+                }
+                else
+                    mProgressBar.value = 0;
                 mProgressBar.enabled = true;
             }
             else

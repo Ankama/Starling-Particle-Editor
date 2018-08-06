@@ -145,6 +145,7 @@ package com.bit101.components
 		 */
 		protected function onChange(event:Event):void
 		{
+			event.stopImmediatePropagation();
 			_text = _tf.text;
 			dispatchEvent(event);
 		}

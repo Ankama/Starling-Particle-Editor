@@ -103,9 +103,9 @@ package com.onebyonedesign.particleeditor
                 m_settings.srcBlend = src.readShort();
                 m_settings.dstBlend = src.readShort();
                 m_settings.emitterType = src.readByte();
+                m_settings.soundScript = src.readUTF();
             }
         }
-
 
         private function onImageLoaded(event:Event) : void
         {
@@ -181,6 +181,7 @@ package com.onebyonedesign.particleeditor
             result.writeShort(m_settings.srcBlend);
             result.writeShort(m_settings.dstBlend);
             result.writeByte(m_settings.emitterType);
+            result.writeUTF(m_settings.soundScript);
 
             return result;
         }

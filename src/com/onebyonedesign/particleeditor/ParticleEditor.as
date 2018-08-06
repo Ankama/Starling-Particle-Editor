@@ -28,6 +28,8 @@ package com.onebyonedesign.particleeditor
     import com.bit101.components.HUISlider;
     import com.bit101.components.Label;
     import com.bit101.components.ProgressBar;
+    import com.bit101.components.Style;
+    import com.bit101.components.Text;
     import com.bit101.components.Window;
 
     import flash.desktop.NativeApplication;
@@ -89,6 +91,7 @@ package com.onebyonedesign.particleeditor
         private var mDuration:HUISlider;
         private var mShot:HUISlider;
         private var mDisplayShot:CheckBox;
+        private var mSoundScript:Text;
         
         /**
          * Create a new Particle Editor
@@ -198,7 +201,12 @@ package com.onebyonedesign.particleeditor
 			mGUI.addSlider("fg", 0, 1.0, { label:"G", name:"fg", width:150 } );
 			mGUI.addSlider("fb", 0, 1.0, { label:"B", name:"fb", width:150 } );
 			mGUI.addSlider("fa", 0, 1.0, { label:"A", name:"fa", width:150 } );
-			
+
+            mGUI.addGroup("Sound");
+			Style.TEXT_BACKGROUND = Style.BACKGROUND;
+            mSoundScript = mGUI.addControl(Text, { name:"sound", width:150, height:50, callback:updateSoundScript} ) as Text;
+            mSoundScript.text = mSettings.soundScript;
+
 			mGUI.addColumn("Particle Color Variance");
 			mGUI.addGroup("Start");
 			mGUI.addSlider("svr", 0, 1.0, { label:"R", name:"svr", width:150 } );
@@ -252,6 +260,8 @@ package com.onebyonedesign.particleeditor
         {
             var binaryParticle:BinaryParticle = new BinaryParticle(mSettings);
             binaryParticle.loadFromByteArray(bytes);
+            if(mSoundScript)
+                mSoundScript.text = mSettings.soundScript;
         }
 		
 		/** After particle file has been loaded */
@@ -372,6 +382,7 @@ package com.onebyonedesign.particleeditor
         private function resetAll(o:*):void
         {
             mSettings.xml = XML(new Main.DEFAULT_CONFIG());
+            mSoundScript.text = mSettings.soundScript;
             updateDurationStatus();
             updateDuration();
             mParticleView.particleData = new ParticleView.DEFAULT_PARTICLE().bitmapData;
@@ -394,6 +405,11 @@ package com.onebyonedesign.particleeditor
                 mShot.value = mSettings.shot;
                 mSettings.shot = mShot.value;
             }
+        }
+
+        private function updateSoundScript(o:* = null):void
+        {
+            mSettings.soundScript = mSoundScript.text;
         }
 
         private function updateDurationStatus(o:* = null):void

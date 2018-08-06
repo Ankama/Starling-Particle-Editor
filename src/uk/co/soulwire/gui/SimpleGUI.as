@@ -1007,10 +1007,10 @@ import flash.utils.getQualifiedClassName;
 				_hidden ? show() : hide();
 			}
 			
-			if(event.keyCode == 83)
+			/*if(event.keyCode == 83)
 			{
 				save();
-			}
+			}*/
 		}
 		
 		private function onMessageEnterFrame(event : Event) : void
