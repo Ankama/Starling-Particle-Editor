@@ -116,6 +116,22 @@
                 <version>1.5.0</version>
                 <executions>
                     <execution>
+                        <id>copy-icons</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>cp</executable>
+                            <arguments>
+                                <argument>-r</argument>
+                                <argument>../src/assets/icon</argument>
+                                <argument>.</argument>
+                            </arguments>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>sign-air</id>
                         <phase>package</phase>
                         <goals>
@@ -141,7 +157,7 @@
                                 <argument>${name}-${project.version}.air</argument>
                                 <argument>${name}-descriptor.xml</argument>
                                 <argument>${name}.swf</argument>
-								<argument>surefire-reports</argument>
+								<argument>icon</argument>
                             </arguments>
                             <workingDirectory>${project.build.directory}</workingDirectory>
                         </configuration>
