@@ -104,6 +104,7 @@ package com.onebyonedesign.particleeditor
                 m_settings.dstBlend = src.readShort();
                 m_settings.emitterType = src.readByte();
                 m_settings.soundScript = src.readUTF();
+                m_settings.soundOffset = src.readFloat() * 1000;
             }
         }
 
@@ -182,6 +183,7 @@ package com.onebyonedesign.particleeditor
             result.writeShort(m_settings.dstBlend);
             result.writeByte(m_settings.emitterType);
             result.writeUTF(m_settings.soundScript);
+            result.writeFloat(Number(m_settings.soundOffset) / 1000);
 
             return result;
         }

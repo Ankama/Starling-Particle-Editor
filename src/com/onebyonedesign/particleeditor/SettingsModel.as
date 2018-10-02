@@ -102,6 +102,7 @@ package com.onebyonedesign.particleeditor
 		private var _dstBlend:uint;
 
         private var _soundScript:String;
+        private var _soundOffset:uint;
         
         private var _xml:XML;
 		
@@ -125,6 +126,7 @@ package com.onebyonedesign.particleeditor
             _displayShot = true;
             _shot = DEFAULT_SHOT;
             _soundScript = "";
+            _soundOffset = 0;
             _maxParts = _xml.maxParticles.@value;
             _lifeSpan = _xml.particleLifeSpan.@value;
             _lifeSpanVar = _xml.particleLifespanVariance.@value;
@@ -229,6 +231,16 @@ package com.onebyonedesign.particleeditor
         public function set soundScript(value:String):void
         {
             _soundScript = value;
+        }
+
+        public function get soundOffset():uint
+        {
+            return _soundOffset;
+        }
+
+        public function set soundOffset(value:uint):void
+        {
+            _soundOffset = value;
         }
 
         public function get displayShot():Boolean

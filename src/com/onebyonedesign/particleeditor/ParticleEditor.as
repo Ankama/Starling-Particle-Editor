@@ -92,6 +92,7 @@ package com.onebyonedesign.particleeditor
         private var mShot:HUISlider;
         private var mDisplayShot:CheckBox;
         private var mSoundScript:Text;
+        private var mSoundOffset:HUISlider;
         
         /**
          * Create a new Particle Editor
@@ -185,10 +186,6 @@ package com.onebyonedesign.particleeditor
 			mGUI.addSlider("degPerSec", -360.0, 360.0, { label:"Deg/Sec", name:"degPerSec" } );
 			mGUI.addSlider("degPerSecVar", 0.0, 360.0, { label:"Deg/Sec Var.", name:"degPerSecVar" } );
 
-            enableSettings();
-            updateDurationStatus();
-            updateDuration();
-			
 			mGUI.addColumn("Particle Color");
 			mGUI.addGroup("Start");
 			mGUI.addSlider("sr", 0, 1.0, { label:"R", name:"sr", width:150 } );
@@ -206,6 +203,11 @@ package com.onebyonedesign.particleeditor
 			Style.TEXT_BACKGROUND = Style.BACKGROUND;
             mSoundScript = mGUI.addControl(Text, { name:"sound", width:150, height:50, callback:updateSoundScript} ) as Text;
             mSoundScript.text = mSettings.soundScript;
+            mSoundOffset = mGUI.addSlider("soundOffset", 0, 10000, { label:"Offset", name:"soundOffset", width:150, labelPrecision:0 } ) as HUISlider;
+
+            enableSettings();
+            updateDurationStatus();
+            updateDuration();
 
 			mGUI.addColumn("Particle Color Variance");
 			mGUI.addGroup("Start");
@@ -399,11 +401,20 @@ package com.onebyonedesign.particleeditor
 
         private function updateDuration(o:* = null):void
         {
-            if(mShot && mDuration)
+            if(mDuration)
             {
-                mShot.maximum = mSettings.duration;
-                mShot.value = mSettings.shot;
-                mSettings.shot = mShot.value;
+                if(mShot)
+                {
+                    mShot.maximum = mSettings.duration;
+                    mShot.value = mSettings.shot;
+                    mSettings.shot = mShot.value;
+                }
+                if(mSoundOffset)
+                {
+                    mSoundOffset.maximum = mSettings.infinite ? 10000 : mSettings.duration * 1000;
+                    mSoundOffset.value = mSettings.soundOffset;
+                    mSettings.soundOffset = mSoundOffset.value;
+                }
             }
         }
 
@@ -420,6 +431,8 @@ package com.onebyonedesign.particleeditor
                 mShot.enabled = !mSettings.infinite;
             if(mDisplayShot)
                 mDisplayShot.enabled = !mSettings.infinite;
+            if(mSoundOffset)
+                mSoundOffset.maximum = mSettings.infinite ? 10000 : mSettings.duration * 1000;
         }
 
         /** enable/disable emitter type settings */
