@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetDirectory>target</targetDirectory>
         <sourceDirectory>src</sourceDirectory>
-        <flex.version>4.6.0</flex.version>
+        <flex.version>4.16.1</flex.version>
         <air.version>30.0</air.version>
         <flexmojos.version>7.1.1</flexmojos.version>
         <flex.home>${settings.localRepository}/org/apache/flex/framework</flex.home>
@@ -105,8 +105,9 @@
                     <compilerWarnings>
                         <warn-no-constructor>false</warn-no-constructor>
                     </compilerWarnings>
+                    <swfVersion>41</swfVersion>
                     <themes>
-                        <theme>${flex.home}/themes/spark/${flex.version}/spark-${flex.version}.swc</theme>
+                        <theme>${flex.home}/themes/halo/${flex.version}/halo-${flex.version}.swc</theme>
                     </themes>
                 </configuration>
             </plugin>
@@ -217,7 +218,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flex.framework.themes</groupId>
-            <artifactId>spark</artifactId>
+            <artifactId>halo</artifactId>
             <version>${flex.version}</version>
             <type>swc</type>
             <scope>runtime</scope>
